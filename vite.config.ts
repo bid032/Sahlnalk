@@ -27,7 +27,7 @@ export default defineConfig({
       },
     }),
     nitro({
-      preset: process.env.NITRO_PRESET || (process.env.NETLIFY ? "netlify" : "node-server"),
+      preset: process.env.NITRO_PRESET || (process.env.VERCEL ? "vercel" : process.env.NETLIFY ? "netlify" : "node-server"),
       compressPublicAssets: { gzip: true, brotli: true },
       minify: true,
       routeRules: {
