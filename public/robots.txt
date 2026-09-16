@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /reset-password
+Disallow: /cart
+Disallow: /checkout
+Disallow: /dashboard
+Disallow: /stock
+Disallow: /order-success
+Disallow: /lovable/
+
+Sitemap: https://rapidkeyz.com/sitemap.xml

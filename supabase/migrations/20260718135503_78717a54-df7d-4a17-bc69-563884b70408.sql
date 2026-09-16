@@ -1,0 +1,1 @@
+UPDATE public.categories SET name_ar = 'أدوات الـ Ai' WHERE slug = 'ai-tools';

@@ -1,0 +1,1 @@
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS discount_percent smallint NOT NULL DEFAULT 0 CHECK (discount_percent >= 0 AND discount_percent <= 95);

@@ -1,0 +1,633 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ─── Rubik (self-hosted variable 300–900, arabic + latin) ─── */
+@font-face {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 300 900;
+  font-display: swap;
+  src: url("/fonts/rubik-arabic-normal.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+@font-face {
+  font-family: "Rubik";
+  font-style: italic;
+  font-weight: 300 900;
+  font-display: swap;
+  src: url("/fonts/rubik-arabic-italic.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+@font-face {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 300 900;
+  font-display: swap;
+  src: url("/fonts/rubik-latin-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Rubik";
+  font-style: italic;
+  font-weight: 300 900;
+  font-display: swap;
+  src: url("/fonts/rubik-latin-italic.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 300 900;
+  font-display: swap;
+  src: url("/fonts/rubik-latin-ext-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Rubik";
+  font-style: italic;
+  font-weight: 300 900;
+  font-display: swap;
+  src: url("/fonts/rubik-latin-ext-italic.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* Sahlnalk - Light-only Fresh Cyan design system (from Facebook brand cover) */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-sans: "Rubik", "IBM Plex Sans Arabic", "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Rubik", "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Rubik", ui-monospace, monospace;
+}
+
+/* Light mode vs Brand Turquoise Cyan Gradient Mode extracted from cover.webp & pp.webp */
+
+:root {
+  --radius: 1rem;
+  --background: oklch(0.58 0.13 222); /* #0699be extracted cover color */
+  --foreground: oklch(0.99 0 0); /* Pure crisp white headings and text */
+  --card: oklch(0.15 0.05 230); /* Rich high-contrast dark teal-slate card background (#071c2c) */
+  --card-foreground: oklch(0.99 0 0);
+  --popover: oklch(0.14 0.05 230);
+  --popover-foreground: oklch(0.99 0 0);
+  --primary: oklch(0.78 0.16 210); /* #16c4e5 electric cyan */
+  --primary-foreground: oklch(0.08 0.04 235);
+  --secondary: oklch(0.24 0.07 230);
+  --secondary-foreground: oklch(0.99 0 0);
+  --muted: oklch(0.20 0.06 230);
+  --muted-foreground: oklch(0.92 0.03 210); /* Crisp soft cyan-white secondary text */
+  --accent: oklch(0.82 0.16 205);
+  --accent-foreground: oklch(0.08 0.04 235);
+  --destructive: oklch(0.65 0.24 25);
+  --destructive-foreground: oklch(0.98 0 0);
+  --brand: oklch(0.78 0.16 210);
+  --brand-foreground: oklch(0.08 0.04 235);
+  --brand-glow: oklch(0.85 0.16 205);
+  --brand-deep: oklch(0.72 0.14 215);
+  --success: oklch(0.75 0.16 165);
+  --warning: oklch(0.78 0.17 75);
+  --border: oklch(0.85 0.15 210 / 30%);
+  --input: oklch(0.14 0.05 230);
+  --ring: oklch(0.85 0.15 210);
+}
+
+.light {
+  --background: oklch(0.985 0.006 240);
+  --foreground: oklch(0.20 0.03 260);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.20 0.03 260);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.20 0.03 260);
+  --primary: oklch(0.62 0.16 235);
+  --primary-foreground: oklch(0.99 0.005 240);
+  --secondary: oklch(0.96 0.015 240);
+  --secondary-foreground: oklch(0.20 0.03 260);
+  --muted: oklch(0.965 0.012 240);
+  --muted-foreground: oklch(0.48 0.03 250);
+  --accent: oklch(0.94 0.05 225);
+  --accent-foreground: oklch(0.20 0.03 260);
+  --destructive: oklch(0.60 0.22 25);
+  --destructive-foreground: oklch(0.99 0 0);
+  --brand: oklch(0.62 0.16 235);
+  --brand-foreground: oklch(0.99 0.005 240);
+  --brand-glow: oklch(0.75 0.14 220);
+  --brand-deep: oklch(0.45 0.20 258);
+  --success: oklch(0.58 0.15 165);
+  --warning: oklch(0.68 0.16 75);
+  --border: oklch(0.20 0.03 260 / 10%);
+  --input: oklch(0.20 0.03 260 / 12%);
+  --ring: oklch(0.62 0.16 235);
+}
+
+/* ─── Light-mode overrides for hard-coded dark utilities ───────── */
+.light [class*="bg-white/5"]   { background-color: oklch(0.20 0.03 260 / 0.04); }
+.light [class*="bg-white/10"]  { background-color: oklch(0.20 0.03 260 / 0.06); }
+.light [class*="bg-white/20"]  { background-color: oklch(0.20 0.03 260 / 0.08); }
+.light [class*="border-white/5"]  { border-color: oklch(0.20 0.03 260 / 0.06); }
+.light [class*="border-white/10"] { border-color: oklch(0.20 0.03 260 / 0.10); }
+.light [class*="border-white/20"] { border-color: oklch(0.20 0.03 260 / 0.15); }
+.light [class*="border-white/40"] { border-color: oklch(0.20 0.03 260 / 0.20); }
+.light [class*="bg-black/20"]  { background-color: oklch(0.20 0.03 260 / 0.04); }
+.light [class*="bg-black/30"]  { background-color: oklch(0.20 0.03 260 / 0.05); }
+.light [class*="bg-black/40"]  { background-color: oklch(0.20 0.03 260 / 0.06); }
+.light [class*="bg-card/80"]   { background-color: oklch(1 0 0 / 0.92); }
+.light [class*="bg-card/60"]   { background-color: oklch(1 0 0 / 0.85); }
+.light [class*="text-white/60"] { color: oklch(0.20 0.03 260 / 0.60); }
+.light [class*="text-white/70"] { color: oklch(0.20 0.03 260 / 0.70); }
+.light [class*="text-white/80"] { color: oklch(0.20 0.03 260 / 0.80); }
+
+/* Body background: exact turquoise cyan gradient sampled directly from cover.webp (#0388ab, #0699be, #08abcc, #09aacc, #16c4e5, #0885af) */
+body {
+  background-image:
+    radial-gradient(ellipse 95% 70% at 50% 0%, #16c4e5 0%, transparent 65%),
+    radial-gradient(ellipse 85% 60% at 10% 50%, #08abcc 0%, transparent 70%),
+    radial-gradient(ellipse 85% 60% at 90% 50%, #09aacc 0%, transparent 70%),
+    linear-gradient(145deg, #0388ab 0%, #0699be 40%, #049bbf 70%, #0885af 100%);
+  background-attachment: fixed;
+  position: relative;
+}
+
+/* Background texture/noise removed site-wide for a cleaner surface. */
+body::before { content: none; }
+/* Slow-drifting aurora ribbon -creative, subtle & GPU friendly. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: clip;
+  contain: strict;
+  opacity: 0.35;
+  background:
+    radial-gradient(65% 45% at 15% 25%, color-mix(in oklab, #16c4e5 45%, transparent), transparent 70%),
+    radial-gradient(55% 40% at 85% 75%, color-mix(in oklab, #08abcc 45%, transparent), transparent 70%),
+    radial-gradient(45% 35% at 50% 85%, color-mix(in oklab, #65d1e6 35%, transparent), transparent 70%);
+  filter: blur(40px);
+  transform: translate3d(0, 0, 0);
+  animation: auroraDrift 30s ease-in-out infinite alternate;
+}
+
+/* Custom contrast & visual glow polish for the brand turquoise cyan gradient mode */
+:root:not(.light) .bg-card,
+:root:not(.light) [class*="bg-card"],
+:root:not(.light) [role="dialog"],
+:root:not(.light) [role="menu"],
+:root:not(.light) [data-radix-popper-content-wrapper] > * {
+  background-color: oklch(0.15 0.05 230 / 95%);
+  backdrop-filter: blur(16px);
+  border-color: oklch(0.85 0.15 210 / 30%);
+  box-shadow: 0 14px 40px -10px rgba(3, 136, 171, 0.40);
+}
+
+:root:not(.light) h1,
+:root:not(.light) h2,
+:root:not(.light) h3,
+:root:not(.light) h4,
+:root:not(.light) .font-black,
+:root:not(.light) .font-bold {
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(2, 20, 32, 0.6);
+}
+
+:root:not(.light) input,
+:root:not(.light) textarea,
+:root:not(.light) select {
+  background-color: oklch(0.13 0.05 235 / 94%);
+  border-color: oklch(0.85 0.15 210 / 35%);
+  color: #ffffff;
+}
+
+:root:not(.light) input::placeholder,
+:root:not(.light) textarea::placeholder {
+  color: oklch(0.88 0.04 210 / 78%);
+}
+
+/* Ensure table headers and rows maintain crisp contrast */
+:root:not(.light) th {
+  color: #ffffff;
+  border-bottom-color: rgba(22, 196, 229, 0.25);
+}
+
+:root:not(.light) td {
+  color: oklch(0.95 0.01 210);
+  border-bottom-color: rgba(22, 196, 229, 0.15);
+}
+
+:root:not(.light) tr:hover {
+  background-color: rgba(22, 196, 229, 0.08);
+}
+.light body::after { opacity: 0.18; }
+
+@keyframes auroraDrift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(1.5%, -1%, 0) scale(1.04); }
+  100% { transform: translate3d(-1.5%, 1%, 0) scale(1.02); }
+}
+
+@media (max-width: 768px) {
+  body::after {
+    animation: none;
+    filter: blur(30px);
+  }
+}
+
+/* Keep app chrome above the fixed background layers without overriding fixed navbars */
+header, main, footer, section { position: relative; z-index: 1; }
+
+.light body {
+  background-image:
+    radial-gradient(ellipse 70% 42% at 50% -8%, color-mix(in oklab, var(--brand) 24%, transparent), transparent 65%),
+    radial-gradient(ellipse 45% 38% at 4% 45%, color-mix(in oklab, #067fa6 14%, transparent), transparent 70%),
+    radial-gradient(ellipse 45% 38% at 96% 55%, color-mix(in oklab, #067fa6 14%, transparent), transparent 70%),
+    radial-gradient(ellipse 80% 40% at 50% 108%, color-mix(in oklab, var(--brand-deep) 12%, transparent), transparent 70%),
+    linear-gradient(to bottom, oklch(0.985 0.012 230), oklch(0.955 0.022 230));
+  background-attachment: fixed;
+}
+
+/* Keep native controls (scrollbar, inputs) in sync with the active theme. */
+html {
+  color-scheme: light dark;
+}
+::selection {
+  background: color-mix(in oklab, var(--brand) 30%, transparent);
+}
+/* Slim brand scrollbar (desktop). */
+@media (min-width: 768px) {
+  ::-webkit-scrollbar { width: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in oklab, var(--brand) 55%, white);
+    border-radius: 8px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+}
+
+
+
+.light .bg-card,
+.light [class*="bg-card"] {
+  box-shadow: 0 1px 2px oklch(0.2 0.04 240 / 0.04), 0 4px 14px oklch(0.2 0.04 240 / 0.05);
+}
+
+.light .brand-glow {
+  box-shadow: 0 8px 24px -8px color-mix(in oklab, var(--brand) 30%, transparent);
+}
+
+@layer base {
+  * { border-color: var(--color-border); }
+  html { background-color: var(--color-background); overflow-x: clip; }
+  /* Hard guard against screenshot bands: no decorative/fixed layer may
+     ever widen the page beyond the viewport. */
+  html, body { max-width: 100%; overscroll-behavior-x: none; }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    overflow-x: clip;
+  }
+  html[dir="rtl"] body { font-family: "Rubik", "IBM Plex Sans Arabic", sans-serif; }
+
+  /* Comfortable Arabic typography -prevent letter/line collisions */
+  html[dir="rtl"] {
+    line-height: 1.85;
+  }
+  html[dir="rtl"] h1,
+  html[dir="rtl"] h2,
+  html[dir="rtl"] h3,
+  html[dir="rtl"] h4,
+  html[dir="rtl"] h5,
+  html[dir="rtl"] h6 {
+    line-height: 1.6;
+    letter-spacing: 0;
+    word-spacing: 0.05em;
+    padding-block: 0.25em;
+  }
+  html[dir="rtl"] h1 { line-height: 1.25; padding-block: 0.3em; }
+  html[dir="rtl"] p,
+  html[dir="rtl"] li,
+  html[dir="rtl"] span,
+  html[dir="rtl"] a,
+  html[dir="rtl"] label,
+  html[dir="rtl"] button {
+    line-height: 1.8;
+  }
+  /* Override tight Tailwind leading utilities on Arabic headings */
+  html[dir="rtl"] .leading-none { line-height: 1.5 !important; }
+  html[dir="rtl"] .leading-tight { line-height: 1.6 !important; }
+  html[dir="rtl"] .leading-snug { line-height: 1.7 !important; }
+  html[dir="rtl"] [class*="leading-\["] { line-height: 1.55 !important; }
+  /* Prevent gradient descenders being clipped by tight line boxes */
+  [class*="bg-clip-text"] { padding-block: 0.1em; }
+}
+
+
+
+@utility brand-glow {
+  box-shadow: 0 0 40px -10px color-mix(in oklab, var(--brand) 55%, transparent);
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+@utility fade-in-up {
+  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Sahlnalk wordmark: flat solid color, no shine, no glow ─
+   Uses the signature brand cyan so it matches buttons, accents and
+   headings site-wide (readable in both themes via the theme tokens). */
+.brand-text,
+.brand-text > * {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--brand);
+  background: none;
+  -webkit-text-fill-color: currentcolor;
+  filter: none;
+  animation: none;
+}
+.brand-text { display: inline-block; }
+
+/* ─── Route (page) transition ─── */
+@keyframes routeEnter {
+  0% { opacity: 0; filter: blur(10px); }
+  60% { opacity: 1; }
+  100% { opacity: 1; }
+}
+.route-transition > * {
+  animation: routeEnter 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+
+/* ─── Global button + interactive-link animations ──────────────── */
+@keyframes brandShine {
+  0%   { transform: translateX(-120%) skewX(-20deg); opacity: 0; }
+  40%  { opacity: 0.5; }
+  100% { transform: translateX(220%) skewX(-20deg); opacity: 0; }
+}
+/* Base: every button and link that has hover styles gets a smooth transition + press */
+button, a {
+  transition-property: transform, box-shadow, background-color, color, border-color, opacity, filter;
+  transition-duration: 0.22s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+button:active:not(:disabled),
+a:active {
+  transform: scale(0.96);
+  transition-duration: 0.08s;
+}
+
+/* Rich hover on "solid" buttons/links (things using bg-brand / bg-foreground / rounded pill CTAs).
+   `.btn-shine` is the same signature for gradient CTAs (bg-gradient-*) which
+   the attribute selectors above can't catch — every primary conversion
+   button site-wide carries it, so اشترِ الآن / واتساب / الدخول all shine alike. */
+a[class*="bg-brand"],
+a[class*="bg-foreground"],
+button[class*="bg-brand"],
+button[class*="bg-foreground"],
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+a[class*="bg-brand"]::before,
+a[class*="bg-foreground"]::before,
+button[class*="bg-brand"]::before,
+button[class*="bg-foreground"]::before,
+.btn-shine::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 40%; height: 100%;
+  background: linear-gradient(90deg, transparent, color-mix(in oklab, white 35%, transparent), transparent);
+  transform: translateX(-120%) skewX(-20deg);
+  pointer-events: none;
+  z-index: 1;
+}
+a[class*="bg-brand"]:hover::before,
+a[class*="bg-foreground"]:hover::before,
+button[class*="bg-brand"]:hover::before,
+button[class*="bg-foreground"]:hover::before,
+.btn-shine:hover::before {
+  animation: brandShine 0.85s ease-out;
+}
+a[class*="bg-brand"]:hover,
+button[class*="bg-brand"]:hover,
+.btn-shine:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -8px color-mix(in oklab, var(--brand) 55%, transparent);
+}
+a[class*="bg-foreground"]:hover,
+button[class*="bg-foreground"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -10px color-mix(in oklab, var(--foreground) 40%, transparent);
+}
+
+/* Outline / border pill buttons get a subtle brand-ring on hover */
+a[class*="border-border"]:hover:not([class*="bg-brand"]):not([class*="bg-foreground"]),
+button[class*="border-border"]:hover:not([class*="bg-brand"]):not([class*="bg-foreground"]) {
+  border-color: color-mix(in oklab, var(--brand) 55%, transparent);
+  transform: translateY(-1px);
+}
+
+/* Icon-only square buttons: gentle scale + brand tint */
+button[class*="size-8"]:hover,
+button[class*="size-9"]:hover,
+button[class*="size-10"]:hover,
+a[class*="size-8"]:hover,
+a[class*="size-9"]:hover,
+a[class*="size-10"]:hover {
+  transform: translateY(-1px) scale(1.06);
+}
+
+.font-display { font-family: var(--font-display); }
+.font-mono    { font-family: var(--font-mono); }
+
+/* Arabic-aware overrides: Space Grotesk has no Arabic glyphs, so tiny
+   uppercase eyebrows fall back to a thin system font and look broken.
+   Force display font + heavier weight + larger min-size in RTL. */
+[dir="rtl"] .font-mono {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+[dir="rtl"] .font-mono.uppercase,
+[dir="rtl"] .uppercase.font-mono {
+  text-transform: none;
+  letter-spacing: 0.04em;
+}
+/* Bump the too-small eyebrow labels so Arabic is legible */
+[dir="rtl"] .text-\[9px\],
+[dir="rtl"] .text-\[10px\],
+[dir="rtl"] .text-\[11px\] {
+  font-size: 14px;
+  line-height: 1.6;
+}
+[dir="rtl"] .text-xs {
+  font-size: 15px;
+  line-height: 1.6;
+}
+[dir="rtl"] .sm\:text-xs {
+  font-size: 15px;
+}
+/* Anything explicitly light should read as regular in Arabic */
+[dir="rtl"] .font-light,
+[dir="rtl"] .font-thin,
+[dir="rtl"] .font-extralight {
+  font-weight: 500;
+}
+
+/* ─── Arabic letter-connection fix ─────────────────────────────
+   `letter-spacing` and `text-transform: uppercase` break the
+   ligatures / connected glyphs of Arabic script, producing the
+   "chopped letters" look. Neutralize them in RTL globally. */
+[dir="rtl"] .uppercase,
+[dir="rtl"] .lowercase,
+[dir="rtl"] .capitalize {
+  text-transform: none !important;
+}
+[dir="rtl"] .tracking-tighter,
+[dir="rtl"] .tracking-tight,
+[dir="rtl"] .tracking-normal,
+[dir="rtl"] .tracking-wide,
+[dir="rtl"] .tracking-wider,
+[dir="rtl"] .tracking-widest,
+[dir="rtl"] [class*="tracking-\["] {
+  letter-spacing: 0 !important;
+}
+
+/* Section eyebrow badges -match the "شركاؤنا الرقميون" look */
+[dir="rtl"] .inline-flex[class*="rounded-full"][class*="text-brand"] {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 700;
+}
+
+
+/* ─── Mobile header order (phones only) ──────────────────────────
+   AR (RTL), from the right: menu → bell → logo (center) → search → cart.
+   LTR mirrors automatically. Plain CSS (not utilities) so it always wins. */
+@media (max-width: 767.5px) {
+  .app-header-actions { display: contents !important; }
+  .app-header-menu { order: 1 !important; }
+  .app-header-bell { order: 2 !important; display: inline-flex !important; }
+  .app-header-logo { order: 3 !important; flex: 1 1 0% !important; min-width: 0 !important; justify-content: center !important; }
+  .app-header-search { order: 4 !important; }
+  .app-header-cart { order: 5 !important; }
+}
+
+/* Hide Lovable badge on published site */
+#lovable-badge,
+a[href*="lovable.dev"][href*="badge"],
+a[aria-label*="Lovable" i],
+a[aria-label*="Edit with Lovable" i],
+[data-lovable-badge],
+iframe[src*="lovable.dev"][src*="badge"],
+/* Hide Netlify Drawer & Feedback Toolbar */
+netlify-drawer,
+[data-netlify-feedback],
+#netlify-visual-feedback,
+iframe[src*="netlify"][src*="feedback"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+@keyframes cartBump {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.35) rotate(-8deg); }
+  60% { transform: scale(0.92) rotate(6deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+/* Brands marquee (auto-scrolling logo strip) */
+.brands-marquee {
+  width: 100%;
+  overflow: hidden;
+  min-height: 104px;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+          mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+.brands-track {
+  display: flex;
+  width: max-content;
+  min-width: 220%;
+  animation: brandsScroll 60s linear infinite;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
+.brands-marquee:hover .brands-track { animation-play-state: paused; }
+@keyframes brandsScroll {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-25%, 0, 0); }
+}
+
+/* Ensure all custom fixed overlays sit below the fixed header */
+:root { --app-header-h: 56px; }
+.app-modal-overlay,
+.fixed.inset-0[class*="z-["],
+.fixed.inset-0.z-50 {
+  padding-top: var(--app-header-h, 0px);
+}
+/* Radix Sonner toaster offset already handled via top-center; nudge below header */
+[data-sonner-toaster][data-y-position="top"] {
+  top: calc(var(--app-header-h, 0px) + 12px) !important;
+}
+
+/* High contrast & smooth borders for PayPal and Debit/Credit Card SDK buttons */
+#paypal-button-container {
+  width: 100%;
+  border-radius: 12px;
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  padding: 4px;
+}
+
+#paypal-button-container iframe {
+  border-radius: 8px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+

@@ -1,0 +1,1 @@
+ALTER TABLE public.product_plans ADD COLUMN IF NOT EXISTS account_type public.account_type NULL;
