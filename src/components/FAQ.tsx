@@ -40,7 +40,7 @@ export function FAQ() {
   }, [items, query]);
 
   return (
-    <section className="mx-auto max-w-6xl px-3 py-12 sm:px-6 sm:py-20" aria-labelledby="faq-heading">
+    <section className="mx-auto max-w-[94rem] px-3 py-12 sm:px-6 sm:py-20" aria-labelledby="faq-heading">
       <div className="grid gap-6 lg:grid-cols-[340px_1fr] lg:gap-10">
         {/* ── Sticky intro column ── */}
         <div className="lg:sticky lg:top-28 lg:self-start">
@@ -82,7 +82,7 @@ export function FAQ() {
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder={isAr ? "اكتب سؤالك هنا..." : "Type your question here..."}
+              placeholder={isAr ? "دور علي سؤالك هنا..." : "Look for your question here..."}
               className="w-full rounded-full border border-border bg-card py-2.5 ps-9 pe-9 text-sm outline-none transition-colors focus:border-brand"
             />
             {query && (
@@ -155,8 +155,8 @@ export function FAQ() {
                   >
                     <span
                       className={`grid size-9 shrink-0 place-items-center rounded-xl text-xs font-black tabular-nums transition-all sm:size-10 sm:text-sm ${isOpen
-                          ? "bg-gradient-to-br from-[#00a9e0] to-[#0b3fa0] text-white shadow-[0_10px_25px_-10px_rgba(0,169,224,0.65)]"
-                          : "bg-brand/10 text-brand"
+                        ? "bg-gradient-to-br from-[#00a9e0] to-[#0b3fa0] text-white shadow-[0_10px_25px_-10px_rgba(0,169,224,0.65)]"
+                        : "bg-brand/10 text-brand"
                         }`}
                     >
                       {String(i + 1).padStart(2, "0")}
@@ -166,8 +166,8 @@ export function FAQ() {
                     </span>
                     <span
                       className={`grid size-8 shrink-0 place-items-center rounded-full border transition-all duration-300 ${isOpen
-                          ? "rotate-45 scale-110 border-brand bg-brand text-brand-foreground"
-                          : "border-border text-muted-foreground group-hover:border-brand/50 group-hover:text-brand"
+                        ? "rotate-45 scale-110 border-brand bg-brand text-brand-foreground"
+                        : "border-border text-muted-foreground group-hover:border-brand/50 group-hover:text-brand"
                         }`}
                       aria-hidden
                     >

@@ -20,7 +20,7 @@ export function Testimonials() {
       */}
 
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-14 relative">
+      <div className="max-w-[94rem] mx-auto px-3 sm:px-6 py-10 sm:py-14 relative">
         <div className="grid gap-6 lg:grid-cols-[340px_1fr] lg:gap-10 items-start">
           {/* ── Sticky intro column (same idea as FAQ) ── */}
           <div className="lg:sticky lg:top-28 lg:self-start">

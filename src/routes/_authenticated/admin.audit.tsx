@@ -214,8 +214,9 @@ function AdminAudit() {
 
   // Realtime -refetch on any change in audit_log.
   useEffect(() => {
+    const channelName = `audit-log-live-${Math.random().toString(36).substring(2, 9)}`;
     const channel = supabase
-      .channel("audit-log-live")
+      .channel(channelName)
       .on("postgres_changes", { event: "*", schema: "public", table: "audit_log" }, () => {
         qc.invalidateQueries({ queryKey: ["audit-log-enriched"] });
       })

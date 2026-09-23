@@ -14,7 +14,7 @@ const searchSchema = z.object({ redirect: z.string().optional() });
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
-    meta: [{ title: "تسجيل الدخول | سهلنالك" }, { name: "robots", content: "noindex, nofollow" }],
+    meta: [{ title: "سهلنالك | تسجيل الدخول" }, { name: "robots", content: "noindex, nofollow" }],
   }),
   validateSearch: (s) => searchSchema.parse(s),
   component: AuthPage,
@@ -109,8 +109,8 @@ function AuthPage() {
             <button
               onClick={() => setMode("signin")}
               className={`flex-1 py-2 text-sm font-bold rounded-full transition-all ${mode === "signin"
-                  ? "bg-brand text-brand-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
+                ? "bg-brand text-brand-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
                 }`}
             >
               {t.auth.signIn}
@@ -118,8 +118,8 @@ function AuthPage() {
             <button
               onClick={() => setMode("signup")}
               className={`flex-1 py-2 text-sm font-bold rounded-full transition-all ${mode === "signup"
-                  ? "bg-brand text-brand-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
+                ? "bg-brand text-brand-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
                 }`}
             >
               {t.auth.signUp}

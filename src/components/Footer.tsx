@@ -44,9 +44,13 @@ export function Footer() {
   const { t, lang } = useApp();
 
   const brand = useBrandSetting();
+  const siteSetting = useSiteSetting<Record<string, any>>("site_settings");
   const socials = useSiteSetting<Record<string, string>>("socials");
   const contact = useSiteSetting<Record<string, string>>("contact");
   const categories = useQuery(footerCategoriesQuery());
+
+  const heroAvatarUrl = (siteSetting.data?.hero_avatar_url ?? "").trim();
+  const avatarUrl = heroAvatarUrl || (brand.data?.avatar_url ?? "").trim() || "/pp.webp";
 
   // Tagline comes from Dashboard , Settings , Brand. i18n text is only a
   // fallback for a brand new install where nothing was saved yet.
@@ -82,24 +86,23 @@ export function Footer() {
 
   return (
     <footer className="mt-10 pb-5 sm:mt-24 sm:pb-6">
-      <div className="mx-auto max-w-6xl px-3 sm:px-6">
+      <div className="mx-auto max-w-[94rem] px-3 sm:px-6">
         <div className="overflow-hidden rounded-3xl border border-brand/20 bg-card shadow-md">
           {/* Profile head */}
           <div className="flex flex-col gap-3 bg-gradient-to-l from-brand/10 via-brand/5 to-transparent p-4 sm:flex-row sm:items-center sm:justify-between sm:p-7">
-            <div className="flex min-w-0 items-center gap-3">
-              <img
-                src={(brand.data?.avatar_url ?? "").trim() || "/pp.webp"}
-                alt="سهلنالك Sahlnalk"
-                decoding="async"
-                loading="lazy"
-                className="size-12 shrink-0 rounded-full bg-white object-cover shadow ring-2 ring-brand/30 sm:size-14"
-              />
+            <div className="flex min-w-0 items-center gap-3 sm:gap-4">
+              <div className="flex items-center gap-1.5 shrink-0">
+                <img
+                  src="/gridLogo.png"
+                  alt="سهلنالك Sahlnalk"
+                  decoding="async"
+                  loading="lazy"
+                  className="h-10 sm:h-13 w-auto shrink-0 object-contain filter drop-shadow-md"
+                />
+                <BadgeCheck className="size-5 shrink-0 text-brand shadow-xs" aria-hidden />
+              </div>
               <div className="min-w-0">
-                <div className="flex items-center gap-1.5">
-                  <BrandName className="text-lg font-black" />
-                  <BadgeCheck className="size-4 shrink-0 text-brand" aria-hidden />
-                </div>
-                <p className="mt-0.5 max-w-[340px] truncate text-xs font-semibold text-muted-foreground sm:text-sm">
+                <p className="max-w-[340px] truncate text-xs sm:text-sm font-bold text-muted-foreground">
                   {tagline}
                 </p>
               </div>
@@ -136,7 +139,7 @@ export function Footer() {
             </div>
             <div className="col-span-2 md:col-span-1">
               <SectionHeader>{t.footer.contact}</SectionHeader>
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-1">
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-2">
                 <ContactRow
                   href={`https://wa.me/${phoneWa}`}
                   external
@@ -168,7 +171,7 @@ export function Footer() {
       </div>
 
       {/* Bottom bar - single row on all screens */}
-      <div className="mx-auto mt-4 flex max-w-6xl flex-row flex-wrap items-center justify-center gap-x-2 gap-y-1 px-3 text-center sm:mt-5 sm:px-6">
+      <div className="mx-auto mt-4 flex max-w-[94rem] flex-row flex-wrap items-center justify-center gap-x-2 gap-y-1 px-3 text-center sm:mt-5 sm:px-6">
         <p className="inline-flex items-center gap-1 text-[11px] font-bold text-muted-foreground sm:text-[13px]">
           © {new Date().getFullYear()} <BrandName className="text-[11px] sm:text-[13px]" />. {t.footer.rights}.
         </p>
@@ -200,7 +203,7 @@ function SectionHeader({ children }: { children: React.ReactNode }) {
 
 function QuickLinks({ t }: { t: ReturnType<typeof useApp>["t"] }) {
   return (
-    <ul className="space-y-2 sm:space-y-2.5">
+    <ul className="space-y-2 sm:space-y-2.5 md:grid md:grid-cols-2 md:gap-x-4 md:gap-y-2.5 md:space-y-0">
       <li>
         <Link
           to="/about"
@@ -245,7 +248,7 @@ function CategoriesList({
   lang: "ar" | "en";
 }) {
   return (
-    <ul className="space-y-2 sm:space-y-2.5">
+    <ul className="space-y-2 sm:space-y-2.5 md:grid md:grid-cols-2 md:gap-x-4 md:gap-y-2.5 md:space-y-0">
       {categories.map((c) => (
         <li key={c.id}>
           <Link

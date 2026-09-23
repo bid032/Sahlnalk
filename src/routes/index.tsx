@@ -20,6 +20,7 @@ import { Footer } from "@/components/Footer";
 import { SiteButton } from "@/components/ui/site-button";
 import { ProductCard, type ProductCardData } from "@/components/ProductCard";
 import { CategoryChip } from "@/components/CategoryCard";
+import { HeroSection } from "@/components/HeroSection";
 import { FAQ_ITEMS_AR } from "@/lib/faq-items";
 import { heroLogosQuery } from "@/components/HeroDecor";
 
@@ -45,7 +46,7 @@ import {
 export const Route = createFileRoute("/")({
   head: ({ loaderData }: { loaderData?: { heroLogos?: string[]; brand?: any } }) => ({
     meta: [
-      { title: "سهلنالك | اشتراكات ChatGPT وMidjourney الأصلية في مصر" },
+      { title: "سهلنالك | سهلنالك كل اشتراكاتك" },
       {
         name: "description",
         content:
@@ -58,7 +59,7 @@ export const Route = createFileRoute("/")({
       },
       {
         property: "og:title",
-        content: "سهلنالك | اشتراكات ChatGPT وMidjourney الأصلية في مصر",
+        content: "سهلنالك | سهلنالك كل اشتراكاتك",
       },
       {
         property: "og:description",
@@ -389,142 +390,36 @@ function HomePage() {
     <div className="min-h-screen bg-background text-foreground">
       <Header />
 
-      <main className="mx-auto w-full max-w-6xl px-3 sm:px-6">
-        {/* ── Cover ── */}
-        <div className="relative mt-3 overflow-hidden rounded-2xl border border-brand/20 bg-gradient-to-br from-[#0bb6e4] via-[#00a9e0] to-[#0b3fa0] sm:mt-5 sm:rounded-3xl">
-          <img
-            src={coverSrc}
-            alt=""
-            aria-hidden
-            width={1600}
-            height={500}
-            loading="eager"
-            fetchPriority="high"
-            decoding="async"
-            className="h-36 w-full object-cover sm:h-56 lg:h-64"
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0b3fa0]/25 via-transparent to-transparent"
-          />
-        </div>
-
-        {/* ── Identity row ── */}
-        <div className="flex flex-col gap-4 px-1 pt-0 sm:flex-row sm:items-end sm:justify-between sm:gap-6 sm:px-4">
-          <div className="flex items-end gap-3 sm:gap-4">
-            <img
-              src={avatarSrc}
-              alt={displayName}
-              width={192}
-              height={192}
-              loading="eager"
-              fetchPriority="high"
-              decoding="async"
-              className="mt-3 size-24 shrink-0 rounded-full bg-white object-cover shadow-xl ring-4 ring-white sm:mt-4 sm:size-32"
-            />
-            <div className="min-w-0 pb-1">
-              <h1 className="flex items-center gap-1.5 text-xl font-extrabold tracking-tight sm:text-3xl">
-                <span className="truncate">{displayName}</span>
-                <BadgeCheck
-                  className="size-5 shrink-0 text-brand sm:size-6"
-                  aria-label={lang === "ar" ? "صفحة موثقة" : "Verified"}
-                />
-              </h1>
-              <p
-                className="mt-0.5 max-w-md truncate text-xs text-muted-foreground sm:text-sm"
-                dir={lang === "ar" ? "rtl" : "ltr"}
-              >
-                {bio}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex flex-col items-start gap-2.5 pb-1 sm:items-end">
-            <div className="flex flex-wrap items-center gap-2">
-              {whatsapp && (
-                <SiteButton variant="primary" asChild>
-                  <a href={`https://wa.me/${whatsapp}`} target="_blank" rel="noopener noreferrer">
-                    <WhatsAppIcon className="size-4" />
-                    {lang === "ar" ? "كلمنا واتساب" : "WhatsApp us"}
-                  </a>
-                </SiteButton>
-              )}
-              <SiteButton variant="outline" asChild>
-                <Link to="/shop">
-                  <Store className="size-4" />
-                  {lang === "ar" ? "تصفح المتجر" : "Browse shop"}
-                </Link>
-              </SiteButton>
-            </div>
-
-            {(socialLinks.length > 0 || email) && (
-              <div className="flex flex-wrap items-center gap-2">
-                {socialLinks.map(({ key, href, Icon, label }) => (
-                  <a
-                    key={key}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={label}
-                    title={label}
-                    className="grid size-9 place-items-center rounded-full border border-border/60 bg-card text-muted-foreground transition-all hover:-translate-y-0.5 hover:border-brand/60 hover:text-brand hover:shadow-[0_8px_20px_-8px_var(--brand)] active:scale-95"
-                  >
-                    <Icon className="size-4" />
-                  </a>
-                ))}
-                {email && (
-                  <a
-                    href={`mailto:${email}`}
-                    aria-label={email}
-                    title={email}
-                    className="grid size-9 place-items-center rounded-full border border-border/60 bg-card text-muted-foreground transition-all hover:-translate-y-0.5 hover:border-brand/60 hover:text-brand hover:shadow-[0_8px_20px_-8px_var(--brand)] active:scale-95"
-                  >
-                    <Mail className="size-4" />
-                  </a>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* ── Stats strip ── */}
-        {heroStats.length > 0 && (
-          <dl className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3 sm:px-4">
-            {heroStats.map((s) => (
-              <div
-                key={s.l}
-                className="flex flex-col rounded-2xl border border-border/60 bg-card px-4 py-3 text-center transition hover:border-brand/40 sm:py-4"
-              >
-                <dt className="order-2 mt-0.5 block text-[11px] text-muted-foreground sm:text-xs">
-                  {s.l}
-                </dt>
-                <dd className="order-1 text-lg font-extrabold text-brand-deep sm:text-2xl">
-                  {s.n}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        )}
+      <main className="mx-auto w-full max-w-[94rem] px-3 sm:px-6">
+        {/* ── New Dynamic Hero Section ── */}
+        <HeroSection
+          heroSetting={heroSetting.data}
+          brandSetting={brand.data}
+          contactSetting={contact.data}
+          statsSetting={statsSetting.data}
+          featuredProducts={featuredList}
+          allProducts={allList}
+        />
 
         {/* ── Products: categories first, then the feed ── */}
         <div className="py-5 sm:py-7">
           <section aria-label={lang === "ar" ? "المنتجات" : "Products"}>
             {(cats.data ?? []).length > 0 && (
-              <div className="mb-5">
-                <div className="mb-3 flex items-center justify-between gap-2">
-                  <h2 className="flex items-center gap-2 text-base font-extrabold sm:text-lg">
-                    <span className="h-4 w-1 rounded-full bg-brand" />
+              <div className="mb-6 sm:mb-8">
+                <div className="mb-3 flex items-center justify-between gap-2 px-0.5">
+                  <h2 className="flex items-center gap-2 text-base font-black sm:text-lg">
+                    <span className="h-4 w-1 rounded-full bg-gradient-to-b from-[#0bb6e4] to-[#0b3fa0]" />
                     {lang === "ar" ? "تسوق حسب القسم" : "Shop by category"}
                   </h2>
                   <Link
                     to="/shop"
-                    className="inline-flex shrink-0 items-center gap-1 text-xs font-bold text-brand hover:underline sm:text-sm"
+                    className="inline-flex shrink-0 items-center gap-1 text-xs font-extrabold text-brand hover:underline sm:text-sm"
                   >
                     {lang === "ar" ? "كل الأقسام" : "All sections"}
                     <GoIcon className="size-3.5" />
                   </Link>
                 </div>
-                <div className="-mx-3 flex snap-x snap-mandatory gap-2.5 overflow-x-auto px-3 pb-1 no-scrollbar sm:-mx-6 sm:gap-3 sm:px-6">
+                <div className="-mx-3 flex snap-x snap-mandatory gap-2.5 overflow-x-auto px-3 pb-1 no-scrollbar sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-0 lg:grid-cols-4">
                   {(cats.data ?? []).map((c) => (
                     <CategoryChip key={c.id} c={c} count={catCounts.get(c.id)} />
                   ))}
@@ -532,82 +427,82 @@ function HomePage() {
               </div>
             )}
             <div className="mb-4 flex flex-wrap items-center gap-2">
-                {feeds.map((f) => (
-                  <SiteButton
-                    key={f.id}
-                    variant="filter"
-                    size="filter"
-                    filterActive={feed === f.id}
-                    onClick={() => pickFeed(f.id)}
-                  >
-                    {lang === "ar" ? f.ar : f.en}
-                  </SiteButton>
-                ))}
-                <Link
-                  to="/shop"
-                  className="ms-auto inline-flex items-center gap-1 text-xs font-bold text-brand hover:underline sm:text-sm"
+              {feeds.map((f) => (
+                <SiteButton
+                  key={f.id}
+                  variant="filter"
+                  size="filter"
+                  filterActive={feed === f.id}
+                  onClick={() => pickFeed(f.id)}
                 >
-                  {lang === "ar" ? "عرض الكل" : "View all"}
-                  <GoIcon className="size-3.5" />
-                </Link>
-              </div>
+                  {lang === "ar" ? f.ar : f.en}
+                </SiteButton>
+              ))}
+              <Link
+                to="/shop"
+                className="ms-auto inline-flex items-center gap-1 text-xs font-bold text-brand hover:underline sm:text-sm"
+              >
+                {lang === "ar" ? "عرض الكل" : "View all"}
+                <GoIcon className="size-3.5" />
+              </Link>
+            </div>
 
-              {feedPending ? (
-                <div className="grid grid-cols-2 gap-2.5 sm:gap-4 lg:grid-cols-4" aria-hidden>
-                  {Array.from({ length: initialVisible() }).map((_, i) => (
-                    <div key={i} className="h-64 animate-pulse rounded-3xl bg-card sm:h-72" />
+            {feedPending ? (
+              <div className="grid grid-cols-2 gap-2.5 sm:gap-4 lg:grid-cols-4" aria-hidden>
+                {Array.from({ length: initialVisible() }).map((_, i) => (
+                  <div key={i} className="h-64 animate-pulse rounded-3xl bg-card sm:h-72" />
+                ))}
+              </div>
+            ) : shown.length > 0 ? (
+              <>
+                <div className="grid grid-cols-2 gap-2.5 sm:gap-4 lg:grid-cols-4">
+                  {shown.map((p, i) => (
+                    <ProductCard key={p.id} p={p} priority={i < 4} />
                   ))}
                 </div>
-              ) : shown.length > 0 ? (
-                <>
-                  <div className="grid grid-cols-2 gap-2.5 sm:gap-4 lg:grid-cols-4">
-                    {shown.map((p, i) => (
-                      <ProductCard key={p.id} p={p} priority={i < 4} />
-                    ))}
-                  </div>
-                  <div className="mt-5 text-center">
-                    <p className="mb-3 text-xs text-muted-foreground tabular-nums">
-                      {lang === "ar"
-                        ? `عرض ${shown.length} من ${feedResolved.length}`
-                        : `Showing ${shown.length} of ${feedResolved.length}`}
-                    </p>
-                    {hasMore ? (
-                      <SiteButton
-                        variant="outline"
-                        size="pill"
-                        onClick={() => setVisibleCount((v) => v + moreStep())}
-                      >
-                        {lang === "ar" ? "عرض المزيد" : "Show more"}
-                        <GoIcon className="size-4 rotate-90" />
-                      </SiteButton>
-                    ) : (
-                      feedResolved.length > 0 && (
-                        <SiteButton variant="primary" size="pill" asChild>
-                          <Link to="/shop">
-                            <Store className="size-4" />
-                            {lang === "ar" ? "عرض كل الخدمات في المتجر" : "View all in shop"}
-                          </Link>
-                        </SiteButton>
-                      )
-                    )}
-                  </div>
-                </>
-              ) : (
-                <div className="rounded-2xl border border-dashed border-border p-8 text-center">
-                  <p className="text-sm text-muted-foreground">
+                <div className="mt-5 text-center">
+                  <p className="mb-3 text-xs text-muted-foreground tabular-nums">
                     {lang === "ar"
-                      ? "لا توجد منتجات حالياً - تصفح المتجر"
-                      : "No products yet - browse the shop"}
+                      ? `عرض ${shown.length} من ${feedResolved.length}`
+                      : `Showing ${shown.length} of ${feedResolved.length}`}
                   </p>
-                  <Link
-                    to="/shop"
-                    className="mt-3 inline-block font-bold text-brand hover:underline"
-                  >
-                    {lang === "ar" ? "المتجر" : "Shop"}
-                  </Link>
+                  {hasMore ? (
+                    <SiteButton
+                      variant="outline"
+                      size="pill"
+                      onClick={() => setVisibleCount((v) => v + moreStep())}
+                    >
+                      {lang === "ar" ? "عرض المزيد" : "Show more"}
+                      <GoIcon className="size-4 rotate-90" />
+                    </SiteButton>
+                  ) : (
+                    feedResolved.length > 0 && (
+                      <SiteButton variant="primary" size="pill" asChild>
+                        <Link to="/shop">
+                          <Store className="size-4" />
+                          {lang === "ar" ? "عرض كل الخدمات في المتجر" : "View all in shop"}
+                        </Link>
+                      </SiteButton>
+                    )
+                  )}
                 </div>
-              )}
-            </section>
+              </>
+            ) : (
+              <div className="rounded-2xl border border-dashed border-border p-8 text-center">
+                <p className="text-sm text-muted-foreground">
+                  {lang === "ar"
+                    ? "لا توجد منتجات حالياً - تصفح المتجر"
+                    : "No products yet - browse the shop"}
+                </p>
+                <Link
+                  to="/shop"
+                  className="mt-3 inline-block font-bold text-brand hover:underline"
+                >
+                  {lang === "ar" ? "المتجر" : "Shop"}
+                </Link>
+              </div>
+            )}
+          </section>
         </div>
 
         {/* ── Reviews + FAQ (always visible under products) ── */}

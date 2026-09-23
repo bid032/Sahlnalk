@@ -135,7 +135,7 @@ export const Route = createFileRoute("/product/$slug")({
     const desc = stripMd(
       p.description_ar ||
       p.description_en ||
-      `${name} الأصلي بالجنيه من سهلنالك - يوصلك في دقائق ومعاه ضمان حقيقي.`,
+      `${name} الأصلي بالجنيه من سهلنالك، يوصلك في دقائق ومعاه ضمان حقيقي.`,
     ).slice(0, 160);
     const title = `${name} | اشتراك أصلي - سهلنالك`;
     const fullUrl = `https://rapidkeyz.com/product/${params.slug}`;
@@ -544,7 +544,7 @@ function ProductPage() {
     return (
       <div className="min-h-screen bg-background text-foreground">
         <Header />
-        <div className="mx-auto w-full max-w-6xl px-3 sm:px-6">
+        <div className="mx-auto w-full max-w-[94rem] px-3 sm:px-6">
           <div className="mt-3 h-36 animate-pulse rounded-2xl bg-card sm:mt-5 sm:h-56 sm:rounded-3xl" />
           <div className="mt-4 h-40 animate-pulse rounded-2xl bg-card sm:rounded-3xl" />
         </div>
@@ -910,7 +910,7 @@ function ProductPage() {
     <div className="min-h-screen bg-background text-foreground">
       <Header />
 
-      <main className="mx-auto w-full max-w-6xl px-3 sm:px-6">
+      <main className="mx-auto w-full max-w-[94rem] px-3 sm:px-6">
         {/* ── Cover with embedded identity ── */}
         <div className="relative mt-3 overflow-hidden rounded-2xl border border-brand/20 bg-gradient-to-br from-[#0bb6e4] via-[#00a9e0] to-[#0b3fa0] sm:mt-5 sm:rounded-3xl">
           <div
@@ -968,10 +968,10 @@ function ProductPage() {
           </nav>
           {/* Identity inside cover */}
           <div className="relative px-3 pb-4 pt-10 sm:px-5 sm:pb-6 sm:pt-14">
-            <h1 className="flex items-center gap-1.5 text-lg font-extrabold tracking-tight text-white drop-shadow-md sm:text-3xl">
+            <h1 className="flex items-center gap-2 text-2xl font-black tracking-wide text-white drop-shadow-md sm:text-4xl lg:text-[42px] leading-tight">
               <span className="truncate">{name}</span>
               <BadgeCheck
-                className="size-5 shrink-0 text-white sm:size-6"
+                className="size-6 shrink-0 text-white sm:size-8"
                 aria-label={isAr ? "خدمة موثقة" : "Verified"}
               />
             </h1>

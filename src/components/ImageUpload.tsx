@@ -125,26 +125,41 @@ export function ImageUpload({ bucket, value, onChange, label, className, size = 
             <span className="text-[10px] text-muted-foreground text-center px-1">لا توجد صورة</span>
           )}
         </div>
-        <label className={`${compact ? "flex-1 min-w-0" : "w-full"} cursor-pointer`}>
-          <div className="h-10 px-4 flex items-center justify-center border border-dashed border-border rounded-lg text-sm text-center hover:border-brand hover:bg-brand/5 transition">
-            {uploading
-              ? "جاري الرفع... / Uploading…"
-              : value
-              ? "استبدال الصورة / Replace"
-              : "اختر صورة / Choose image"}
-          </div>
-          <input
-            type="file"
-            accept="image/*"
-            className="hidden"
-            disabled={uploading}
-            onChange={(e) => {
-              const f = e.target.files?.[0];
-              if (f) handleFile(f);
-              e.target.value = "";
-            }}
-          />
-        </label>
+        <div className={compact ? "flex-1 min-w-0 flex items-center gap-2" : "w-full flex items-center gap-2"}>
+          <label className="flex-1 cursor-pointer">
+            <div className="h-10 px-4 flex items-center justify-center border border-dashed border-border rounded-lg text-sm text-center hover:border-brand hover:bg-brand/5 transition">
+              {uploading
+                ? "جاري الرفع... / Uploading…"
+                : value
+                ? "استبدال الصورة / Replace"
+                : "اختر صورة / Choose image"}
+            </div>
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              disabled={uploading}
+              onChange={(e) => {
+                const f = e.target.files?.[0];
+                if (f) handleFile(f);
+                e.target.value = "";
+              }}
+            />
+          </label>
+          {value && (
+            <button
+              type="button"
+              onClick={() => {
+                setError(null);
+                onChange("");
+              }}
+              className="h-10 px-3 flex items-center justify-center border border-destructive/30 bg-destructive/10 text-destructive rounded-lg text-xs font-bold hover:bg-destructive/20 transition shrink-0"
+              title="إزالة الصورة / Remove Image"
+            >
+              إزالة الصورة
+            </button>
+          )}
+        </div>
       </div>
       {requireExactDimensions ? (
         <p className="text-[11px] text-muted-foreground mt-1.5">

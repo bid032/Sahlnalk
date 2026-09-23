@@ -136,7 +136,7 @@ export function ProductCard({ p, priority = false }: { p: ProductCardData; prior
         className="group flex h-full flex-col overflow-hidden rounded-3xl border border-border/60 bg-card shadow-sm outline-none transition-all duration-200 hover:-translate-y-1 hover:border-brand/50 hover:shadow-[0_20px_40px_-24px_rgba(11,63,160,0.45)] focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       >
         {/* ── Cover: same signature as the product-details hero ── */}
-        <div className="relative h-28 overflow-hidden bg-gradient-to-br from-[#0bb6e4] via-[#00a9e0] to-[#0b3fa0] sm:h-32">
+        <div className="relative aspect-square w-full overflow-hidden bg-gradient-to-br from-[#0bb6e4] via-[#00a9e0] to-[#0b3fa0]">
           {p.cover_url ? (
             <img
               src={p.cover_url}
@@ -157,60 +157,55 @@ export function ProductCard({ p, priority = false }: { p: ProductCardData; prior
                 }}
               />
               {p.icon_url ? (
-                <div className="pointer-events-none absolute -bottom-7 end-3 size-24 rotate-[-8deg] select-none transition-transform duration-300 group-hover:rotate-[-4deg] group-hover:scale-105 sm:size-28">
+                <div className="pointer-events-none absolute -bottom-3.5 sm:-bottom-5 inset-x-0 mx-auto w-[94%] sm:w-[98%] max-w-[250px] sm:max-w-[310px] aspect-square rotate-[-6deg] select-none transition-transform duration-300 group-hover:rotate-[-2deg] group-hover:scale-105">
                   <img
                     src={p.icon_url}
                     alt=""
                     aria-hidden
                     loading={priority ? "eager" : "lazy"}
                     decoding="async"
-                    className="size-full rounded-2xl object-cover opacity-80 shadow-2xl ring-4 ring-white/60"
+                    className="size-full rounded-2xl sm:rounded-3xl object-cover opacity-100 shadow-2xl ring-4 ring-white/80"
                   />
                 </div>
               ) : (
                 <span
                   aria-hidden
-                  className="pointer-events-none absolute -bottom-7 end-3 grid size-24 rotate-[-8deg] place-items-center rounded-2xl bg-white/20 text-2xl font-black text-white/70 select-none sm:size-28 sm:text-3xl"
+                  className="pointer-events-none absolute -bottom-3.5 sm:-bottom-5 inset-x-0 mx-auto grid w-[94%] sm:w-[98%] max-w-[250px] sm:max-w-[310px] aspect-square rotate-[-6deg] place-items-center rounded-2xl sm:rounded-3xl bg-white/25 text-4xl sm:text-6xl font-black text-white select-none shadow-2xl ring-4 ring-white/80"
                 >
                   {name.slice(0, 2).toUpperCase()}
                 </span>
               )}
-              <div className="relative flex size-full max-w-[50%] flex-col justify-center px-4">
-                <span className="truncate text-base font-black text-white drop-shadow-md sm:text-lg">
-                  {name}
-                </span>
-              </div>
             </>
           )}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0b3fa0]/70 via-[#0b3fa0]/15 to-transparent"
+            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0b3fa0]/40 via-transparent to-transparent"
           />
           {hasDiscount && !soldOut && (
-            <span className="absolute top-2 start-2 rounded-lg bg-destructive px-2 py-0.5 text-[10px] font-black text-destructive-foreground shadow-lg">
+            <span className="absolute top-2.5 start-2.5 rounded-lg bg-destructive px-2 py-0.5 text-[10px] font-black text-destructive-foreground shadow-lg">
               -{discount}%
             </span>
           )}
           {soldOut && (
             <>
               <div className="absolute inset-0 bg-white/55" />
-              <span className="absolute top-2 start-2 rounded-full bg-destructive px-2.5 py-0.5 text-[10px] font-black text-destructive-foreground shadow-lg">
+              <span className="absolute top-2.5 start-2.5 rounded-full bg-destructive px-2.5 py-0.5 text-[10px] font-black text-destructive-foreground shadow-lg">
                 {t.product.soldOut}
               </span>
             </>
           )}
         </div>
 
-        {/* ── Identity (no avatar - cover carries the visual) ── */}
-        <div className="flex flex-1 flex-col px-3 pb-3 pt-2 sm:px-3.5">
-          <h3 className="flex min-w-0 items-center gap-1 text-sm font-extrabold tracking-tight text-foreground sm:text-[15px]">
+        {/* ── Identity (no text on cover, title & badge below) ── */}
+        <div className="flex flex-1 flex-col px-3 pb-3 pt-2.5 sm:px-3.5 sm:pb-3.5 sm:pt-3">
+          <h3 className="flex min-w-0 items-center justify-between gap-1.5 text-sm font-black tracking-tight text-foreground sm:text-[15px]">
             <span className="truncate">{name}</span>
-            <BadgeCheck className="size-3.5 shrink-0 text-brand sm:size-4" aria-hidden />
+            <BadgeCheck className="size-4 shrink-0 text-brand" aria-hidden />
           </h3>
-          <p className="mt-1 flex min-w-0 items-center gap-1.5 text-[10px] font-semibold text-muted-foreground sm:text-[11px]">
-            <span className="size-1 shrink-0 rounded-full bg-brand" />
+          <p className="mt-1 flex min-w-0 items-center gap-1.5 text-[11px] font-semibold text-muted-foreground">
+            <span className="size-1.5 shrink-0 rounded-full bg-brand" />
             <span className="truncate">{planLabel || t.product.priceStarting}</span>
-            <span aria-hidden className="shrink-0 text-border">
+            <span aria-hidden className="shrink-0 text-border/80">
               •
             </span>
             <span className="shrink-0">
@@ -225,36 +220,36 @@ export function ProductCard({ p, priority = false }: { p: ProductCardData; prior
           </p>
 
           {/* ── Price panel: everything about price in one place ── */}
-          <div className="mt-2 flex items-center justify-between gap-2 rounded-2xl border border-border/60 bg-background/60 px-3 py-2">
+          <div className="mt-2.5 flex items-center justify-between gap-2 rounded-2xl border border-border/60 bg-background/60 px-3 py-2">
             <div className="min-w-0">
-              <p className="text-[9px] font-bold text-muted-foreground sm:text-[10px]">
+              <p className="text-[10px] font-bold text-muted-foreground leading-none mb-0.5">
                 {soldOut ? (lang === "ar" ? "الحالة" : "Status") : t.product.priceStarting}
               </p>
-              <p className="flex flex-wrap items-baseline gap-x-1.5">
+              <div className="flex flex-wrap items-baseline gap-x-1.5 leading-tight">
                 {soldOut ? (
-                  <span className="text-sm font-black text-destructive sm:text-base">
+                  <span className="text-xs font-black text-destructive sm:text-sm">
                     {t.product.soldOut}
                   </span>
                 ) : finalPrice !== null ? (
                   <>
-                    {oldPrice !== null && (
-                      <span className="text-[11px] text-muted-foreground line-through tabular-nums sm:text-xs">
-                        {oldPrice}
-                      </span>
-                    )}
-                    <span className="text-lg font-black text-brand-deep tabular-nums sm:text-xl">
+                    <span className="text-base font-black text-brand-deep tabular-nums sm:text-lg">
                       {finalPrice}{" "}
                       <span className="text-[10px] font-bold text-muted-foreground">
                         {t.common.currency}
                       </span>
                     </span>
+                    {oldPrice !== null && (
+                      <span className="text-[11px] text-muted-foreground line-through tabular-nums">
+                        {oldPrice}
+                      </span>
+                    )}
                   </>
                 ) : (
-                  <span className="text-lg font-black text-brand-deep tabular-nums sm:text-xl">
-                    ,
+                  <span className="text-base font-black text-brand-deep tabular-nums sm:text-lg">
+                    -
                   </span>
                 )}
-              </p>
+              </div>
             </div>
             {!soldOut &&
               (hasDiscount ? (
@@ -272,28 +267,29 @@ export function ProductCard({ p, priority = false }: { p: ProductCardData; prior
           </div>
 
           {/* ── Actions ── */}
-          <div className="mt-2 flex items-center gap-1.5">
+          <div className="mt-2.5 flex items-center gap-1.5">
             <SiteButton
               variant="primary"
               size="pill"
-              className="flex-1 py-2 text-[11px] sm:py-2.5 sm:text-[13px]"
+              className="flex-1 py-2 text-[11px] font-extrabold sm:py-2.5 sm:text-[13px]"
               disabled={soldOut}
               onClick={openBuy}
               title={soldOut ? t.product.soldOut : t.product.buyNow}
               aria-label={soldOut ? t.product.soldOut : t.product.buyNow}
             >
-              <Zap />
+              <Zap className="size-3.5" />
               <span>{soldOut ? t.product.soldOut : t.product.buyNow}</span>
             </SiteButton>
             <SiteButton
               variant="outline"
               size="icon"
+              className="shrink-0 rounded-full size-9 sm:size-10"
               disabled={soldOut}
               onClick={handleAdd}
               aria-label={soldOut ? t.product.soldOut : t.product.addToCart}
               title={soldOut ? t.product.soldOut : t.product.addToCart}
             >
-              <ShoppingCart />
+              <ShoppingCart className="size-4" />
             </SiteButton>
           </div>
         </div>

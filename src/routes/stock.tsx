@@ -147,8 +147,9 @@ function StockDispenser({ staffName }: { staffName: string }) {
   // Changing the sheet link in the dashboard must switch the displayed data
   // right away, not on the next natural poll.
   useEffect(() => {
+    const channelName = `stock-settings-watch-${Math.random().toString(36).substring(2, 9)}`;
     const ch = supabase
-      .channel("stock-settings-watch")
+      .channel(channelName)
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "site_settings" },

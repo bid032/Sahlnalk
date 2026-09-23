@@ -46,6 +46,7 @@ const siteButtonVariants = cva(
         filter: "rounded-full border",
       },
       size: {
+        default: "px-5 py-2.5 text-sm [&_svg]:size-4",
         sm: "px-4 py-2 text-xs [&_svg]:size-3.5",
         pill: "px-5 py-2.5 text-sm [&_svg]:size-4",
         lg: "px-6 py-3 text-sm sm:text-base [&_svg]:size-4",

@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { useApp } from "@/contexts/AppContext";
 import { supabase } from "@/integrations/supabase/client";
 import type { User } from "@supabase/supabase-js";
-import { ShoppingCart, Menu, X, Search, Sun, Moon } from "lucide-react";
+import { ShoppingCart, Menu, X, Search } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { CartDrawer } from "@/components/CartDrawer";
 import { SiteButton } from "@/components/ui/site-button";
@@ -72,349 +72,366 @@ export function Header() {
 
   const nav = (
     <nav
-      className={`fixed top-0 start-0 end-0 z-[10000] border-b border-border bg-background/90 backdrop-blur-md transition-all duration-300 ${shrunk ? "shadow-[0_6px_24px_-12px_hsl(var(--brand)/0.35)]" : ""}`}
+      className={`fixed top-0 start-0 end-0 z-[10000] border-b border-border/80 bg-background/95 backdrop-blur-xl transition-all duration-300 ${shrunk ? "shadow-[0_8px_30px_-12px_rgba(11,169,224,0.3)]" : ""}`}
     >
+      {/* Top signature gradient accent line */}
+      <div className="h-[3px] w-full bg-gradient-to-r from-[#0bb6e4] via-[#00a9e0] to-[#0b3fa0]" />
+
       <div
-        className={`app-header-row max-w-7xl mx-auto px-3 sm:px-6 flex items-center gap-2 sm:gap-4 transition-all duration-300 ${shrunk ? "h-12 sm:h-14" : "h-14 sm:h-20"}`}
+        className={`app-header-row max-w-[94rem] mx-auto px-3 sm:px-6 flex items-center transition-all duration-300 ${shrunk ? "h-12 sm:h-14" : "h-14 sm:h-20"}`}
       >
-        <div className="app-header-logo flex min-w-0 shrink-0 items-center">
-          <Link
-            to="/"
-            className="flex items-center min-w-0"
-            aria-label={lang === "ar" ? "سهلنالك" : "Sahlnalk"}
-          >
-            <img
-              src="/logo.png"
-              alt="سهلنالك Sahlnalk"
-              decoding="async"
-              className={`w-auto rounded-lg object-contain shrink-0 transition-all duration-300 ${shrunk ? "h-7 sm:h-8" : "h-8 sm:h-10"}`}
-            />
-          </Link>
-        </div>
-
-        {/* Center search pill (desktop) */}
-        <div className="hidden md:flex flex-1 justify-center px-4 min-w-0">
-          <button
-            type="button"
-            onClick={() => setSearchOpen(true)}
-            className="w-full max-w-md flex items-center gap-2 rounded-full border border-border/70 bg-muted/60 px-4 py-2 text-sm text-muted-foreground transition hover:border-brand/50 hover:text-brand active:scale-[0.99]"
-          >
-            <Search className="size-4 shrink-0" />
-            <span className="flex-1 truncate text-start">
-              {lang === "ar" ? "دوّر على اشتراك..." : "Search subscriptions..."}
-            </span>
-          </button>
-        </div>
-
-        <div className="app-header-actions flex items-center gap-1 sm:gap-3 shrink-0">
-          <div className="hidden sm:flex bg-muted rounded-full p-1">
-            <button
-              onClick={() => setLang("en")}
-              className={`px-2.5 sm:px-3 py-1 text-[11px] sm:text-xs font-bold rounded-full transition-all ${
-                lang === "en" ? "bg-brand text-brand-foreground" : "text-muted-foreground"
-              }`}
-            >
-              EN
-            </button>
-            <button
-              onClick={() => setLang("ar")}
-              className={`px-2.5 sm:px-3 py-1 text-[11px] sm:text-xs font-bold rounded-full transition-all ${
-                lang === "ar" ? "bg-brand text-brand-foreground" : "text-muted-foreground"
-              }`}
-            >
-              AR
-            </button>
-          </div>
-
-          {/* Sahlnalk theme toggle: visible for switching between Light and New Gradient mode */}
-          <button
-            type="button"
-            onClick={toggleTheme}
-            aria-label="Toggle theme"
-            title={lang === "ar" ? (theme === "dark" ? "الوضع الفاتح" : "وضع الجريديانت") : theme === "dark" ? "Light mode" : "Gradient mode"}
-            className="size-9 grid place-items-center rounded-full border border-border/60 bg-muted/50 text-muted-foreground transition-all hover:border-brand/60 hover:text-brand active:scale-95"
-          >
-            {theme === "dark" ? <Sun className="size-[18px]" /> : <Moon className="size-[18px]" />}
-          </button>
-
-          <span className="app-header-bell">
-          <AdminNotifications />
-          </span>
-
-          <button
-            type="button"
-            onClick={() => setSearchOpen(true)}
-            aria-label={lang === "ar" ? "بحث" : "Search"}
-            className="app-header-search size-9 grid place-items-center rounded-full border border-border/60 bg-muted/50 text-muted-foreground transition-colors hover:border-brand/60 hover:text-brand active:scale-95 md:bg-transparent"
-          >
-            <Search className="size-[18px]" />
-          </button>
-          <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
-
-          <button
-            type="button"
-            onClick={() => setCartOpen(true)}
-            aria-label="Cart"
-            data-cart-anchor
-            className={`app-header-cart relative size-9 grid place-items-center rounded-full border border-border/60 bg-muted/50 text-muted-foreground transition-all hover:border-brand/60 hover:text-brand active:scale-95 md:bg-transparent ${bumping ? "animate-[cartBump_0.5s_ease-out]" : ""}`}
-          >
-            <ShoppingCart className={`size-[18px] ${bumping ? "text-brand" : ""}`} />
-            {cartCount > 0 && (
-              <span
-                className={`absolute -top-1 -end-1 grid size-5 place-items-center rounded-full bg-brand text-[10px] font-black text-brand-foreground ring-2 ring-white ${bumping ? "animate-[cartBump_0.5s_ease-out]" : ""}`}
-              >
-                {cartCount}
-              </span>
-            )}
-          </button>
-          <CartDrawer open={cartOpen} onOpenChange={setCartOpen} />
-
-          {user ? (
-            <SiteButton variant="gradient" size="sm" asChild className="hidden sm:inline-flex">
-              <Link to="/dashboard">{t.nav.dashboard}</Link>
-            </SiteButton>
-          ) : (
-            <SiteButton variant="gradient" size="sm" asChild className="hidden sm:inline-flex">
-              <Link to="/auth">{t.nav.login}</Link>
-            </SiteButton>
-          )}
-
-          {/* Mobile hamburger */}
-          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-            <SheetTrigger asChild>
-              <button
-                className="app-header-menu btn-shine grid size-9 place-items-center rounded-full bg-gradient-to-l from-[#0b5fc0] via-[#00a9e0] to-[#33d9f7] text-white [text-shadow:0_1px_2px_rgba(11,63,160,0.55)] ring-1 ring-inset ring-white/30 shadow-[0_8px_20px_-8px_rgba(11,95,192,0.7)] transition-all hover:brightness-110 active:scale-95 md:hidden"
-                aria-label="Menu"
-              >
-                <Menu className="size-[18px]" />
-              </button>
-            </SheetTrigger>
-            <SheetContent side={lang === "ar" ? "right" : "left"} className="w-[280px] p-0">
-              <div className="flex items-center justify-between p-4 border-b border-border">
-                <div className="flex items-center">
-                  <img
-                    src="/logo.png"
-                    alt="سهلنالك Sahlnalk"
-                    decoding="async"
-                    className="h-8 w-auto rounded-lg object-contain"
-                  />
-                </div>
-                <span className="w-6" />
-              </div>
-              <div className="px-4 pt-3">
+        {/* ── MOBILE HEADER LAYOUT (md:hidden) ── */}
+        <div className="flex md:hidden items-center justify-between w-full gap-2">
+          {/* Right Side (يمين): Menu button + Bell */}
+          <div className="flex items-center gap-1.5 shrink-0">
+            <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+              <SheetTrigger asChild>
                 <button
-                  type="button"
-                  onClick={() => {
-                    closeMobile();
-                    setTimeout(() => setSearchOpen(true), 120);
-                  }}
-                  className="w-full flex items-center gap-2 bg-muted/60 border border-border rounded-full px-3 py-2 hover:border-brand transition-colors text-start"
+                  className="app-header-menu btn-shine grid size-9.5 place-items-center rounded-full bg-gradient-to-l from-[#0b5fc0] via-[#00a9e0] to-[#33d9f7] text-white shadow-md transition-all duration-300 hover:scale-105 active:scale-95"
+                  aria-label="Menu"
                 >
-                  <Search className="size-4 text-muted-foreground shrink-0" />
-                  <span className="text-sm text-muted-foreground flex-1">
-                    {lang === "ar" ? "ابحث عن خدمة..." : "Search services..."}
-                  </span>
+                  <Menu className="size-5" />
                 </button>
-                <button
-                  type="button"
-                  onClick={toggleTheme}
-                  className="mt-2 w-full flex items-center gap-2.5 rounded-2xl border border-border bg-card px-3 py-2.5 text-start transition active:scale-[0.99]"
-                >
-                  <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-muted text-muted-foreground">
-                    {theme === "dark" ? <Sun className="size-4" /> : <Moon className="size-4" />}
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-sm font-extrabold">
-                      {lang === "ar" ? "مظهر الموقع" : "Appearance"}
-                    </span>
-                    <span className="block text-[11px] text-muted-foreground">
-                      {lang === "ar"
-                        ? theme === "dark"
-                          ? "وضع الجريديانت — اضغط للفاتح"
-                          : "الوضع الفاتح — اضغط للجريديانت"
-                        : theme === "dark"
-                          ? "Gradient Mode — tap for light"
-                          : "Light Mode — tap for gradient"}
-                    </span>
-                  </span>
-                  <span
-                    className="grid h-6 w-11 shrink-0 place-items-center rounded-full bg-muted transition-colors"
-                    aria-hidden
-                  >
-                    <span
-                      className={`size-5 rounded-full bg-white shadow transition-transform ${
-                        theme === "dark" ? "-translate-x-2.5 rtl:translate-x-2.5" : "translate-x-2.5 rtl:-translate-x-2.5"
-                      }`}
+              </SheetTrigger>
+              <SheetContent side={lang === "ar" ? "right" : "left"} className="w-[295px] p-0 border-s border-border">
+                <div className="flex items-center justify-between p-4 border-b border-border/80 bg-muted/30">
+                  <div className="flex items-center">
+                    <img
+                      src="/logo.png"
+                      alt="سهلنالك Sahlnalk"
+                      decoding="async"
+                      className="h-8.5 w-auto rounded-lg object-contain"
                     />
-                </span>
-              </button>
-              </div>
-              <nav className="flex flex-col px-2 py-3">
-                {/* الصفحات */}
-                <div className="px-3 pt-2 pb-1">
-                  <h3 className="text-brand text-sm font-extrabold flex items-center gap-2">
-                    <span className="w-1 h-4 bg-brand rounded-full" />
-                    {lang === "ar" ? "الصفحات" : "Pages"}
-                  </h3>
+                  </div>
+                  <span className="w-6" />
                 </div>
-                <div className="flex flex-col border-t border-border/50">
-                  <Link
-                    to="/"
-                    onClick={closeMobile}
-                    className="px-4 py-3 text-sm font-semibold text-foreground/90 hover:bg-muted hover:text-brand border-b border-border/40 transition-colors"
-                    activeProps={{ className: "text-brand" }}
-                    activeOptions={{ exact: true }}
+                <div className="px-4 pt-3 space-y-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      closeMobile();
+                      setTimeout(() => setSearchOpen(true), 120);
+                    }}
+                    className="w-full flex items-center gap-2 bg-muted/60 border border-border/80 rounded-full px-3.5 py-2 hover:border-brand transition-colors text-start"
                   >
-                    {t.nav.home}
-                  </Link>
-                  <Link
-                    to="/about"
-                    onClick={closeMobile}
-                    className="px-4 py-3 text-sm font-semibold text-foreground/90 hover:bg-muted hover:text-brand border-b border-border/40 transition-colors"
-                    activeProps={{ className: "text-brand" }}
-                  >
-                    {t.nav.about}
-                  </Link>
-                  <Link
-                    to="/privacy"
-                    onClick={closeMobile}
-                    className="px-4 py-3 text-sm font-semibold text-foreground/90 hover:bg-muted hover:text-brand border-b border-border/40 transition-colors"
-                    activeProps={{ className: "text-brand" }}
-                  >
-                    {t.nav.privacy}
-                  </Link>
-                  <Link
-                    to="/terms"
-                    onClick={closeMobile}
-                    className="px-4 py-3 text-sm font-semibold text-foreground/90 hover:bg-muted hover:text-brand border-b border-border/40 transition-colors"
-                    activeProps={{ className: "text-brand" }}
-                  >
-                    {t.nav.terms}
-                  </Link>
-                  {user && (
+                    <Search className="size-4 text-brand shrink-0" />
+                    <span className="text-sm font-semibold text-muted-foreground flex-1">
+                      {lang === "ar" ? "ابحث عن خدمة..." : "Search services..."}
+                    </span>
+                  </button>
+                </div>
+                <nav className="flex flex-col px-3 py-3">
+                  <div className="px-2 pt-2 pb-1">
+                    <h3 className="text-brand text-xs font-black uppercase tracking-wider flex items-center gap-2">
+                      <span className="w-1.5 h-3.5 bg-gradient-to-b from-[#0bb6e4] to-[#0b3fa0] rounded-full" />
+                      {lang === "ar" ? "الصفحات" : "Pages"}
+                    </h3>
+                  </div>
+                  <div className="flex flex-col space-y-1 mt-1">
                     <Link
-                      to="/dashboard"
+                      to="/"
                       onClick={closeMobile}
-                      className="px-4 py-3 text-sm font-semibold text-foreground/90 hover:bg-muted hover:text-brand border-b border-border/40 transition-colors"
-                      activeProps={{ className: "text-brand" }}
+                      className="px-3.5 py-2.5 text-sm font-extrabold rounded-xl transition-all duration-200 hover:bg-brand/10 hover:text-brand"
+                      activeProps={{ className: "bg-gradient-to-r from-[#0b5fc0] to-[#00a9e0] text-white shadow-md" }}
+                      activeOptions={{ exact: true }}
                     >
-                      {t.nav.dashboard}
+                      {t.nav.home}
                     </Link>
-                  )}
-                  {hasStock && (
                     <Link
-                      to="/stock"
+                      to="/shop"
                       onClick={closeMobile}
-                      className="px-4 py-3 text-sm font-extrabold border-b border-border/40 transition-colors text-blue-600 dark:text-blue-400 hover:bg-blue-500/10"
+                      className="px-3.5 py-2.5 text-sm font-extrabold rounded-xl transition-all duration-200 hover:bg-brand/10 hover:text-brand"
+                      activeProps={{ className: "bg-gradient-to-r from-[#0b5fc0] to-[#00a9e0] text-white shadow-md" }}
                     >
-                      {lang === "ar" ? "الاستوك" : "Stock"}
+                      {t.nav.shop ?? (lang === "ar" ? "المتجر" : "Shop")}
                     </Link>
-                  )}
+                    <Link
+                      to="/about"
+                      onClick={closeMobile}
+                      className="px-3.5 py-2.5 text-sm font-extrabold rounded-xl transition-all duration-200 hover:bg-brand/10 hover:text-brand"
+                      activeProps={{ className: "bg-gradient-to-r from-[#0b5fc0] to-[#00a9e0] text-white shadow-md" }}
+                    >
+                      {t.nav.about}
+                    </Link>
+                    <Link
+                      to="/terms"
+                      onClick={closeMobile}
+                      className="px-3.5 py-2.5 text-sm font-extrabold rounded-xl transition-all duration-200 hover:bg-brand/10 hover:text-brand"
+                      activeProps={{ className: "bg-gradient-to-r from-[#0b5fc0] to-[#00a9e0] text-white shadow-md" }}
+                    >
+                      {t.nav.terms}
+                    </Link>
+                    <Link
+                      to="/privacy"
+                      onClick={closeMobile}
+                      className="px-3.5 py-2.5 text-sm font-extrabold rounded-xl transition-all duration-200 hover:bg-brand/10 hover:text-brand"
+                      activeProps={{ className: "bg-gradient-to-r from-[#0b5fc0] to-[#00a9e0] text-white shadow-md" }}
+                    >
+                      {t.nav.privacy}
+                    </Link>
+                  </div>
+
+                  <div className="my-3 border-t border-border/60" />
+
                   {isAdmin && (
                     <Link
                       to="/admin"
                       onClick={closeMobile}
-                      className="px-4 py-3 text-sm font-extrabold text-brand hover:bg-muted border-b border-border/40 transition-colors"
+                      className="px-3.5 py-2.5 text-sm font-black rounded-xl bg-destructive/10 text-destructive hover:bg-destructive/20 transition-all flex items-center justify-between"
                     >
-                      {t.nav.admin}
+                      <span>{lang === "ar" ? "لوحة التحكم" : "Admin"}</span>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-destructive text-destructive-foreground font-black">
+                        PRO
+                      </span>
                     </Link>
                   )}
-                </div>
-              </nav>
+                </nav>
 
-              <div className="p-3 border-t border-border space-y-2">
-                <div className="flex bg-muted rounded-full p-1">
-                  <button
-                    onClick={() => setLang("en")}
-                    className={`flex-1 px-3 py-1.5 text-xs font-bold rounded-full transition-all ${
-                      lang === "en" ? "bg-brand text-brand-foreground" : "text-muted-foreground"
-                    }`}
-                  >
-                    English
-                  </button>
-                  <button
-                    onClick={() => setLang("ar")}
-                    className={`flex-1 px-3 py-1.5 text-xs font-bold rounded-full transition-all ${
-                      lang === "ar" ? "bg-brand text-brand-foreground" : "text-muted-foreground"
-                    }`}
-                  >
-                    العربية
-                  </button>
+                <div className="absolute bottom-0 start-0 end-0 p-4 border-t border-border/80 bg-muted/20 space-y-2">
+                  <div className="flex items-center justify-between bg-muted/80 border border-border/60 rounded-full p-1 shadow-inner">
+                    <button
+                      onClick={() => setLang("en")}
+                      className={`flex-1 py-1.5 text-xs font-black rounded-full transition-all duration-200 ${lang === "en"
+                        ? "bg-gradient-to-r from-[#0b5fc0] to-[#00a9e0] text-white shadow-sm"
+                        : "text-muted-foreground hover:text-foreground"
+                        }`}
+                    >
+                      English
+                    </button>
+                    <button
+                      onClick={() => setLang("ar")}
+                      className={`flex-1 py-1.5 text-xs font-black rounded-full transition-all duration-200 ${lang === "ar"
+                        ? "bg-gradient-to-r from-[#0b5fc0] to-[#00a9e0] text-white shadow-sm"
+                        : "text-muted-foreground hover:text-foreground"
+                        }`}
+                    >
+                      العربية
+                    </button>
+                  </div>
+
+                  {user ? (
+                    <SiteButton variant="gradient" size="pill" asChild className="w-full font-black shadow-md">
+                      <Link to="/dashboard" onClick={closeMobile}>
+                        {t.nav.dashboard}
+                      </Link>
+                    </SiteButton>
+                  ) : (
+                    <SiteButton variant="gradient" size="pill" asChild className="w-full font-black shadow-md">
+                      <Link to="/auth" onClick={closeMobile}>
+                        {t.nav.login}
+                      </Link>
+                    </SiteButton>
+                  )}
                 </div>
-                {user ? (
-                  <button
-                    onClick={async () => {
-                      await supabase.auth.signOut();
-                      closeMobile();
-                    }}
-                    className="w-full px-4 py-2.5 bg-muted rounded-lg text-sm font-bold hover:bg-destructive/10 hover:text-destructive transition"
-                  >
-                    {t.nav.logout}
-                  </button>
-                ) : (
-                  <Link
-                    to="/auth"
-                    onClick={closeMobile}
-                    className="btn-shine block text-center px-4 py-2.5 bg-gradient-to-l from-[#0b5fc0] via-[#00a9e0] to-[#33d9f7] text-white [text-shadow:0_1px_2px_rgba(11,63,160,0.55)] ring-1 ring-inset ring-white/30 rounded-full text-sm font-bold shadow-sm active:scale-95 transition"
-                  >
-                    {t.nav.login}
-                  </Link>
-                )}
-              </div>
-            </SheetContent>
-          </Sheet>
+              </SheetContent>
+            </Sheet>
+
+            <span className="app-header-bell">
+              <AdminNotifications />
+            </span>
+          </div>
+
+          {/* Center (في النص): Logo */}
+          <div className="flex-1 flex justify-center items-center min-w-0">
+            <Link
+              to="/"
+              className="flex items-center transition-transform duration-300 hover:scale-[1.03] active:scale-95"
+              aria-label={lang === "ar" ? "سهلنالك" : "Sahlnalk"}
+            >
+              <img
+                src="/gridLogo.png"
+                alt="سهلنالك Sahlnalk"
+                decoding="async"
+                className={`w-auto rounded-lg object-contain transition-all duration-300 ${shrunk ? "h-7" : "h-8.5"}`}
+              />
+            </Link>
+          </div>
+
+          {/* Left side (شمال): Search + Cart */}
+          <div className="flex items-center gap-1.5 shrink-0">
+            <button
+              type="button"
+              onClick={() => setSearchOpen(true)}
+              aria-label={lang === "ar" ? "بحث" : "Search"}
+              className="app-header-search size-9.5 grid place-items-center rounded-full border border-border/80 bg-muted/60 text-foreground transition-all duration-300 hover:border-brand/60 hover:text-brand hover:scale-110 active:scale-90"
+            >
+              <Search className="size-4.5" />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setCartOpen(true)}
+              aria-label="Cart"
+              data-cart-anchor
+              className={`app-header-cart relative size-9.5 grid place-items-center rounded-full border border-border/80 bg-muted/60 text-foreground transition-all duration-300 hover:border-brand/60 hover:text-brand hover:scale-110 active:scale-90 ${bumping ? "animate-[cartBump_0.5s_ease-out]" : ""}`}
+            >
+              <ShoppingCart className={`size-4.5 ${bumping ? "text-brand" : ""}`} />
+              {cartCount > 0 && (
+                <span
+                  className={`absolute -top-1 -end-1 grid size-5 place-items-center rounded-full bg-gradient-to-r from-[#0bb6e4] to-[#0b3fa0] text-[10px] font-black text-white shadow-md ring-2 ring-background ${bumping ? "animate-[cartBump_0.5s_ease-out]" : ""}`}
+                >
+                  {cartCount}
+                </span>
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* ── DESKTOP HEADER LAYOUT (hidden md:flex) ── */}
+        <div className="hidden md:flex items-center justify-between w-full gap-4">
+          <div className="app-header-logo flex min-w-0 shrink-0 items-center">
+            <Link
+              to="/"
+              className="flex items-center min-w-0 transition-transform duration-300 hover:scale-[1.03] active:scale-95"
+              aria-label={lang === "ar" ? "سهلنالك" : "Sahlnalk"}
+            >
+              <img
+                src="/gridLogo.png"
+                alt="سهلنالك Sahlnalk"
+                decoding="async"
+                className={`w-auto rounded-lg object-contain shrink-0 transition-all duration-300 ${shrunk ? "h-8" : "h-10"}`}
+              />
+            </Link>
+          </div>
+
+          {/* Center search pill (desktop) */}
+          <div className="flex flex-1 justify-center px-4 min-w-0">
+            <button
+              type="button"
+              onClick={() => setSearchOpen(true)}
+              className="w-full max-w-md flex items-center gap-2.5 rounded-full border border-border/80 bg-muted/50 px-4 py-2 text-sm text-muted-foreground transition-all duration-300 hover:border-brand/60 hover:bg-muted/80 hover:text-brand hover:shadow-md hover:scale-[1.01] active:scale-[0.99]"
+            >
+              <Search className="size-4 shrink-0 text-brand" />
+              <span className="flex-1 truncate text-start font-semibold">
+                {lang === "ar" ? "دوّر على اشتراك..." : "Search subscriptions..."}
+              </span>
+            </button>
+          </div>
+
+          <div className="app-header-actions flex items-center gap-3 shrink-0">
+            <div className="flex bg-muted/80 border border-border/60 rounded-full p-1 shadow-inner">
+              <button
+                onClick={() => setLang("en")}
+                className={`px-3 py-1 text-xs font-black rounded-full transition-all duration-200 hover:scale-105 active:scale-95 ${lang === "en"
+                  ? "bg-gradient-to-r from-[#0b5fc0] to-[#00a9e0] text-white shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+                  }`}
+              >
+                EN
+              </button>
+              <button
+                onClick={() => setLang("ar")}
+                className={`px-3 py-1 text-xs font-black rounded-full transition-all duration-200 hover:scale-105 active:scale-95 ${lang === "ar"
+                  ? "bg-gradient-to-r from-[#0b5fc0] to-[#00a9e0] text-white shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+                  }`}
+              >
+                AR
+              </button>
+            </div>
+
+            <span className="app-header-bell">
+              <AdminNotifications />
+            </span>
+
+            <button
+              type="button"
+              onClick={() => setCartOpen(true)}
+              aria-label="Cart"
+              data-cart-anchor
+              className={`app-header-cart relative size-9.5 grid place-items-center rounded-full border border-border/80 bg-muted/60 text-foreground transition-all duration-300 hover:border-brand/60 hover:text-brand hover:scale-110 active:scale-90 ${bumping ? "animate-[cartBump_0.5s_ease-out]" : ""}`}
+            >
+              <ShoppingCart className={`size-4.5 ${bumping ? "text-brand" : ""}`} />
+              {cartCount > 0 && (
+                <span
+                  className={`absolute -top-1 -end-1 grid size-5 place-items-center rounded-full bg-gradient-to-r from-[#0bb6e4] to-[#0b3fa0] text-[10px] font-black text-white shadow-md ring-2 ring-background ${bumping ? "animate-[cartBump_0.5s_ease-out]" : ""}`}
+                >
+                  {cartCount}
+                </span>
+              )}
+            </button>
+
+            {user ? (
+              <SiteButton variant="gradient" size="sm" asChild className="inline-flex btn-shine font-black transition-transform duration-300 hover:scale-105 active:scale-95 shadow-md">
+                <Link to="/dashboard">{t.nav.dashboard}</Link>
+              </SiteButton>
+            ) : (
+              <SiteButton variant="gradient" size="sm" asChild className="inline-flex btn-shine font-black transition-transform duration-300 hover:scale-105 active:scale-95 shadow-md">
+                <Link to="/auth">{t.nav.login}</Link>
+              </SiteButton>
+            )}
+          </div>
         </div>
       </div>
 
       {/* Tier 2: nav links (desktop) */}
-      <div className="hidden md:block border-t border-brand/10">
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-center gap-7 h-10 text-[13px] font-bold text-muted-foreground">
+      <div className="hidden md:block border-t border-border/40 bg-muted/20">
+        <div className="max-w-[94rem] mx-auto px-3 sm:px-6 flex items-center justify-center gap-3 sm:gap-4 h-10.5 text-sm">
           <Link
             to="/"
-            className="transition hover:text-brand-deep"
-            activeProps={{ className: "text-brand-deep" }}
+            className="px-4 py-1 rounded-full font-extrabold text-foreground/80 transition-all duration-200 hover:scale-105 hover:text-brand hover:bg-brand/10"
+            activeProps={{
+              className: "px-4 py-1 rounded-full font-black text-white bg-gradient-to-r from-[#0b5fc0] via-[#00a9e0] to-[#0bb6e4] shadow-md shadow-brand/20 ring-1 ring-white/30 hover:scale-105",
+            }}
             activeOptions={{ exact: true }}
           >
             {t.nav.home}
           </Link>
           <Link
             to="/shop"
-            className="transition hover:text-brand-deep"
-            activeProps={{ className: "text-brand-deep" }}
+            className="px-4 py-1 rounded-full font-extrabold text-foreground/80 transition-all duration-200 hover:scale-105 hover:text-brand hover:bg-brand/10"
+            activeProps={{
+              className: "px-4 py-1 rounded-full font-black text-white bg-gradient-to-r from-[#0b5fc0] via-[#00a9e0] to-[#0bb6e4] shadow-md shadow-brand/20 ring-1 ring-white/30 hover:scale-105",
+            }}
           >
             {t.nav.shop ?? (lang === "ar" ? "المتجر" : "Shop")}
           </Link>
           <Link
             to="/about"
-            className="transition hover:text-brand-deep"
-            activeProps={{ className: "text-brand-deep" }}
+            className="px-4 py-1 rounded-full font-extrabold text-foreground/80 transition-all duration-200 hover:scale-105 hover:text-brand hover:bg-brand/10"
+            activeProps={{
+              className: "px-4 py-1 rounded-full font-black text-white bg-gradient-to-r from-[#0b5fc0] via-[#00a9e0] to-[#0bb6e4] shadow-md shadow-brand/20 ring-1 ring-white/30 hover:scale-105",
+            }}
           >
             {t.nav.about}
           </Link>
           <Link
             to="/terms"
-            className="transition hover:text-brand-deep"
-            activeProps={{ className: "text-brand-deep" }}
+            className="px-4 py-1 rounded-full font-extrabold text-foreground/80 transition-all duration-200 hover:scale-105 hover:text-brand hover:bg-brand/10"
+            activeProps={{
+              className: "px-4 py-1 rounded-full font-black text-white bg-gradient-to-r from-[#0b5fc0] via-[#00a9e0] to-[#0bb6e4] shadow-md shadow-brand/20 ring-1 ring-white/30 hover:scale-105",
+            }}
           >
             {t.nav.terms}
           </Link>
           <Link
             to="/privacy"
-            className="transition hover:text-brand-deep"
-            activeProps={{ className: "text-brand-deep" }}
+            className="px-4 py-1 rounded-full font-extrabold text-foreground/80 transition-all duration-200 hover:scale-105 hover:text-brand hover:bg-brand/10"
+            activeProps={{
+              className: "px-4 py-1 rounded-full font-black text-white bg-gradient-to-r from-[#0b5fc0] via-[#00a9e0] to-[#0bb6e4] shadow-md shadow-brand/20 ring-1 ring-white/30 hover:scale-105",
+            }}
           >
             {t.nav.privacy}
           </Link>
           {hasStock && (
             <Link
               to="/stock"
-              className="inline-flex items-center rounded-full bg-brand/10 px-3 py-1 text-xs font-extrabold text-brand transition hover:bg-brand hover:text-white"
+              className="px-4 py-1 rounded-full font-black text-blue-600 dark:text-blue-400 bg-blue-500/10 transition-all duration-200 hover:scale-105 hover:bg-blue-600 hover:text-white"
+              activeProps={{
+                className: "px-4 py-1 rounded-full font-black text-white bg-gradient-to-r from-blue-600 to-indigo-600 shadow-md ring-1 ring-white/30 hover:scale-105",
+              }}
             >
               {lang === "ar" ? "الاستوك" : "Stock"}
             </Link>
           )}
           {isAdmin && (
-            <Link to="/admin" className="text-brand font-extrabold hover:underline">
+            <Link
+              to="/admin"
+              className="px-4 py-1 rounded-full font-black text-brand bg-brand/10 transition-all duration-200 hover:scale-105 hover:bg-brand hover:text-white"
+              activeProps={{
+                className: "px-4 py-1 rounded-full font-black text-white bg-gradient-to-r from-[#0b5fc0] to-[#00a9e0] shadow-md ring-1 ring-white/30 hover:scale-105",
+              }}
+            >
               {t.nav.admin}
             </Link>
           )}

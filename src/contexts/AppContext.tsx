@@ -68,13 +68,12 @@ export const THEME_KEY = "rk-theme";
 export const THEME_MODE_KEY = "rk-theme-mode";
 
 function getInitialTheme(): Theme {
-  // Original design: dark by default (matches production build).
-  return "dark";
+  return "light";
 }
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>("ar");
-  const [theme, setTheme] = useState<Theme>(getInitialTheme);
+  const [theme, setTheme] = useState<Theme>("light");
 
   const [cart, setCart] = useState<CartItem[]>([]);
   const [hydrated, setHydrated] = useState(false);
@@ -298,12 +297,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!isBrowser || !hydrated) return;
     const html = document.documentElement;
-    html.classList.remove("light", "dark");
-    html.classList.add(theme);
+    html.classList.remove("dark");
+    html.classList.add("light");
     try {
-      localStorage.setItem(THEME_KEY, theme);
+      localStorage.setItem(THEME_KEY, "light");
     } catch {}
-  }, [theme, themeMode, hydrated]);
+  }, [hydrated]);
 
   useEffect(() => {
     if (!isBrowser || !hydrated) return;
@@ -337,20 +336,50 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const playAddSound = () => {
     if (!isBrowser) return;
     try {
+      const audio = new Audio("/sounds/cart.mp3");
+      audio.volume = 0.5;
+      const promise = audio.play();
+      if (promise !== undefined) {
+        promise.catch(() => {
+          playSynthesizedCartChime();
+        });
+      }
+    } catch {
+      playSynthesizedCartChime();
+    }
+  };
+
+  const playSynthesizedCartChime = () => {
+    try {
       const Ctx = (window as any).AudioContext || (window as any).webkitAudioContext;
       if (!Ctx) return;
       const ctx = new Ctx();
-      const o = ctx.createOscillator();
-      const g = ctx.createGain();
-      o.type = "triangle";
-      o.frequency.setValueAtTime(880, ctx.currentTime);
-      o.frequency.exponentialRampToValueAtTime(1760, ctx.currentTime + 0.12);
-      g.gain.setValueAtTime(0.0001, ctx.currentTime);
-      g.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime + 0.02);
-      g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.2);
-      o.connect(g).connect(ctx.destination);
-      o.start();
-      o.stop(ctx.currentTime + 0.22);
+
+      // Premium 4-note ascending crystal chime (C5 -> E5 -> G5 -> C6)
+      const notes = [
+        { freq: 523.25, start: 0, duration: 0.14 },
+        { freq: 659.25, start: 0.05, duration: 0.14 },
+        { freq: 783.99, start: 0.1, duration: 0.18 },
+        { freq: 1046.5, start: 0.15, duration: 0.35 },
+      ];
+
+      notes.forEach(({ freq, start, duration }) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, ctx.currentTime + start);
+
+        gain.gain.setValueAtTime(0.0001, ctx.currentTime + start);
+        gain.gain.exponentialRampToValueAtTime(0.18, ctx.currentTime + start + 0.015);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + start + duration);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(ctx.currentTime + start);
+        osc.stop(ctx.currentTime + start + duration + 0.05);
+      });
     } catch {}
   };
 

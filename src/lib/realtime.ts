@@ -106,7 +106,8 @@ export function subscribeTables(
     timer = setTimeout(flush, debounceMs);
   };
 
-  const channel = supabase.channel(channelName);
+  const topic = `${channelName}-${Math.random().toString(36).substring(2, 9)}`;
+  const channel = supabase.channel(topic);
   for (const table of tables) {
     channel.on("postgres_changes" as any, { event: "*", schema: "public", table }, () =>
       schedule([table]),

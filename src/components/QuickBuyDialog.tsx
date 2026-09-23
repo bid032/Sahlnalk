@@ -561,7 +561,7 @@ export function QuickBuyDialog({
                     <img
                       src={product.cover_url}
                       alt={name}
-                      className="aspect-[16/10] w-full object-cover"
+                      className="aspect-square w-full object-cover"
                     />
                   ) : product.icon_url ? (
                     <img

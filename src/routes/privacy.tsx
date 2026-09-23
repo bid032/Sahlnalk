@@ -10,20 +10,20 @@ import { StructuredContent } from "@/components/StructuredContent";
 export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
-      { title: "الاسترداد والخصوصية | سهلنالك" },
+      { title: "سهلنالك | الاسترداد والخصوصية" },
       {
         name: "description",
         content: "استرداد خلال 6 ساعات للحسابات المشتركة غير المستخدمة - وازاي بنحمي بياناتك في سهلنالك.",
       },
       { property: "og:site_name", content: "سهلنالك" },
-      { property: "og:title", content: "الاسترداد والخصوصية | سهلنالك" },
+      { property: "og:title", content: "سهلنالك | الاسترداد والخصوصية" },
       { property: "og:description", content: "امتى تسترد فلوسك، وازاي بنحمي بياناتك - باختصار ووضوح." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://rapidkeyz.com/privacy" },
       { property: "og:image", content: "https://rapidkeyz.com/cover.webp" },
       { property: "og:image:secure_url", content: "https://rapidkeyz.com/cover.webp" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "الاسترداد والخصوصية | سهلنالك" },
+      { name: "twitter:title", content: "سهلنالك | الاسترداد والخصوصية" },
       { name: "twitter:description", content: "امتى تسترد فلوسك، وازاي بنحمي بياناتك - باختصار ووضوح." },
       { name: "twitter:image", content: "https://rapidkeyz.com/cover.webp" },
     ],
@@ -56,7 +56,7 @@ function PrivacyPage() {
     <div className="min-h-screen bg-background text-foreground">
       <Header />
       <PageHeader title={t.privacy.title} />
-      <main className="mx-auto w-full max-w-6xl px-3 py-5 sm:px-6 sm:py-7">
+      <main className="mx-auto w-full max-w-[94rem] px-3 py-5 sm:px-6 sm:py-7">
         <div className="rounded-3xl border border-brand/15 bg-card p-5 shadow-sm sm:p-8">
           {hasCustom ? (
             <div className="space-y-5">

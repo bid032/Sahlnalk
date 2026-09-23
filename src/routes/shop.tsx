@@ -27,14 +27,14 @@ export const Route = createFileRoute("/shop")({
   }),
   head: () => ({
     meta: [
-      { title: "كل الاشتراكات | سهلنالك" },
+      { title: "سهلنالك | كل الاشتراكات" },
       {
         name: "description",
         content:
           "كل الاشتراكات الرقمية في مكان واحد: ذكاء اصطناعي وتصميم وشغل وترفيه - دور باسم الخدمة أو فلتر بالقسم، وادفع بالجنيه.",
       },
       { property: "og:site_name", content: "Sahlnalk" },
-      { property: "og:title", content: "كل الاشتراكات | سهلنالك" },
+      { property: "og:title", content: "سهلنالك | كل الاشتراكات" },
       {
         property: "og:description",
         content: "ذكاء اصطناعي وتصميم وشغل وترفيه - أسعار بالجنيه وتسليم فوري.",
@@ -45,7 +45,7 @@ export const Route = createFileRoute("/shop")({
       { property: "og:image:secure_url", content: "https://rapidkeyz.com/cover.webp" },
       { property: "og:image:alt", content: "متجر سهلنالك - كل الاشتراكات" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "كل الاشتراكات | سهلنالك" },
+      { name: "twitter:title", content: "سهلنالك | كل الاشتراكات" },
       { name: "twitter:description", content: "ذكاء اصطناعي وتصميم وشغل وترفيه - أسعار بالجنيه وتسليم فوري." },
       { name: "twitter:image", content: "https://rapidkeyz.com/cover.webp" },
     ],
@@ -235,32 +235,46 @@ function ShopPage() {
       <Header />
       <main className="flex-1">
         {/* ── Collection cover ── */}
-        <div className="mx-auto w-full max-w-6xl px-3 sm:px-6">
+        <div className="mx-auto w-full max-w-[94rem] px-3 sm:px-6">
           <div className="relative mt-3 overflow-hidden rounded-2xl border border-brand/20 bg-gradient-to-br from-[#0bb6e4] via-[#00a9e0] to-[#0b3fa0] sm:mt-5 sm:rounded-3xl">
-            <img
-              src={coverSrc}
-              alt=""
+            <div
               aria-hidden
-              loading="eager"
-              fetchPriority="high"
-              decoding="async"
-              className="h-28 w-full object-cover sm:h-40"
+              className="pointer-events-none absolute inset-0"
+              style={{
+                backgroundImage:
+                  "radial-gradient(circle at 15% 30%, rgba(255,255,255,.35) 0, transparent 30%), radial-gradient(circle at 85% 70%, rgba(255,255,255,.25) 0, transparent 28%), radial-gradient(circle at 60% 15%, rgba(255,255,255,.2) 0, transparent 25%)",
+              }}
             />
+            {/* Large Watermark White Logo on Left Side filling empty area */}
+            <div className="pointer-events-none absolute left-2 sm:left-8 top-1/2 -translate-y-1/2 flex items-center select-none overflow-hidden h-full">
+              <img
+                src="/whiteLogo.png"
+                alt=""
+                aria-hidden
+                className="h-[150%] sm:h-[180%] max-h-[160px] sm:max-h-[220px] w-auto object-contain opacity-15 sm:opacity-20"
+              />
+            </div>
             <div
               aria-hidden
               className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0b3fa0]/45 via-[#0b3fa0]/10 to-transparent"
             />
-            <div className="absolute inset-x-0 bottom-0 flex items-end gap-3 p-3 sm:gap-4 sm:p-5">
-              <img
-                src={avatarSrc}
-                alt={isAr ? "سهلنالك" : "Sahlnalk"}
-                loading="eager"
-                fetchPriority="high"
-                decoding="async"
-                className="size-12 shrink-0 rounded-xl bg-white object-cover shadow-lg ring-2 ring-white sm:size-16"
-              />
-              <div className="min-w-0 pb-0.5 text-white">
-                <h1 className="truncate text-lg font-extrabold drop-shadow sm:text-2xl">
+            <div className="relative z-10 flex flex-col justify-center p-5 sm:p-8 md:p-10 min-h-[135px] sm:min-h-[175px]">
+              <nav
+                aria-label="breadcrumb"
+                className="mb-2 flex items-center gap-2 text-xs font-bold text-white/90 sm:text-sm md:text-base"
+              >
+                <Link to="/" className="transition hover:text-white hover:underline">
+                  {isAr ? "الرئيسية" : "Home"}
+                </Link>
+                <span aria-hidden className="opacity-70">/</span>
+                <span className="truncate font-extrabold text-white">
+                  {activeCategory
+                    ? (isAr ? activeCategory.name_ar : activeCategory.name_en) || activeCategory.slug
+                    : (isAr ? "المتجر" : "Shop")}
+                </span>
+              </nav>
+              <div className="min-w-0 text-white">
+                <h1 className="truncate text-2xl font-black text-white drop-shadow-md sm:text-4xl lg:text-[42px] leading-tight tracking-wide">
                   {activeCategory
                     ? (isAr ? activeCategory.name_ar : activeCategory.name_en) ||
                     activeCategory.slug
@@ -268,12 +282,12 @@ function ShopPage() {
                       ? "كل الاشتراكات"
                       : "All subscriptions"}
                 </h1>
-                <p className="text-[11px] text-white/85 sm:text-xs">
+                <p className="mt-2 text-xs font-semibold text-white/90 drop-shadow sm:text-sm md:text-base">
                   {loading
                     ? "…"
                     : isAr
-                      ? `${visible.length} خدمة • تسليم فوري`
-                      : `${visible.length} services • instant delivery`}
+                      ? `${visible.length} خدمة متوفرة • تسليم فوري`
+                      : `${visible.length} services available • instant delivery`}
                 </p>
               </div>
             </div>
@@ -285,7 +299,7 @@ function ShopPage() {
           className="sticky z-30 mt-3 border-y border-border/60 bg-card/95 backdrop-blur-md sm:mt-4"
           style={{ top: "var(--app-header-h, 56px)" }}
         >
-          <div className="mx-auto flex max-w-6xl flex-col gap-2 px-3 py-2.5 sm:px-6">
+          <div className="mx-auto flex max-w-[94rem] flex-col gap-2 px-3 py-2.5 sm:px-6">
             <div className="flex items-center gap-2">
               <form onSubmit={submitSearch} className="relative flex-1">
                 <Search className="pointer-events-none absolute top-1/2 -translate-y-1/2 start-3 size-4 text-muted-foreground" />
@@ -354,7 +368,7 @@ function ShopPage() {
           </div>
         </div>
 
-        <section className="max-w-6xl mx-auto px-3 sm:px-6 pb-16 pt-5">
+        <section className="max-w-[94rem] mx-auto px-3 sm:px-6 pb-16 pt-5">
           <div
             aria-hidden
             className={`h-0.5 overflow-hidden rounded-full transition-opacity ${refreshing ? "opacity-100" : "opacity-0"}`}

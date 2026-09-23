@@ -1,13 +1,72 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { type ReactNode, useEffect, useRef, useState } from "react";
-import { Settings } from "lucide-react";
+import { Settings, ArrowUp, ArrowDown, Trash2, Plus } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/contexts/AppContext";
 import { pageDefaults } from "@/lib/page-defaults";
 import { RichTextEditor } from "@/components/RichTextEditor";
 import { ImageUpload } from "@/components/ImageUpload";
 import { AdminHero } from "@/components/AdminHero";
+import { allProductsQuery } from "@/lib/home-queries";
+
+const DEFAULT_HERO_SERVICES = [
+  {
+    id: "chatgpt",
+    slug: "chatgpt-plus",
+    name_ar: "ChatGPT Plus (GPT-4o)",
+    name_en: "ChatGPT Plus (GPT-4o)",
+    subtitle_ar: "أسرع طريقة للتفعيل على إيميلك الشخصي",
+    originalPrice: "1,050 ج.م",
+    price: 380,
+    iconEmoji: "🤖",
+    badge: "خصم 64%",
+  },
+  {
+    id: "midjourney",
+    slug: "midjourney-v6",
+    name_ar: "Midjourney V6 Pro",
+    name_en: "Midjourney V6 Pro",
+    subtitle_ar: "توليد صور بجودة 8K بدون حدود",
+    originalPrice: "1,550 ج.م",
+    price: 420,
+    iconEmoji: "🎨",
+    badge: "توليد 8K",
+  },
+  {
+    id: "canva",
+    slug: "canva-pro",
+    name_ar: "Canva Pro (حساب خاص)",
+    name_en: "Canva Pro (Private Account)",
+    subtitle_ar: "أدوات الذكاء الاصطناعي وتصميمات احترافية",
+    originalPrice: "680 ج.م",
+    price: 190,
+    iconEmoji: "✨",
+    badge: "وفر 72%",
+  },
+  {
+    id: "adobe",
+    slug: "adobe-creative-cloud",
+    name_ar: "Adobe Creative Cloud",
+    name_en: "Adobe Creative Cloud",
+    subtitle_ar: "الحزمة الكاملة لأكثر من 20 تطبيق أصلي",
+    originalPrice: "2,850 ج.م",
+    price: 650,
+    iconEmoji: "🚀",
+    badge: "الحزمة الكاملة",
+  },
+  {
+    id: "claude",
+    slug: "claude-pro",
+    name_ar: "Claude 3.5 Sonnet",
+    name_en: "Claude 3.5 Sonnet",
+    subtitle_ar: "أعلى دقة في البرمجة وتحليل البيانات",
+    originalPrice: "1,050 ج.م",
+    price: 390,
+    iconEmoji: "🧠",
+    badge: "للبرمجة والتحليل",
+  },
+];
 
 export const Route = createFileRoute("/_authenticated/admin/settings")({
   component: AdminSettings,
@@ -68,7 +127,94 @@ function AdminSettings() {
   const [hero, setHero] = useState<any>({
     subtitle_ar: "",
     subtitle_en: "",
+    services: DEFAULT_HERO_SERVICES,
   });
+
+  const websiteProducts = useQuery(allProductsQuery());
+  const productsList = websiteProducts.data ?? [];
+  const [selectedProductId, setSelectedProductId] = useState<string>("");
+
+  const moveHeroService = (index: number, direction: "up" | "down") => {
+    const list = [...(hero.services || DEFAULT_HERO_SERVICES)];
+    const targetIndex = direction === "up" ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= list.length) return;
+    const temp = list[index];
+    list[index] = list[targetIndex];
+    list[targetIndex] = temp;
+    setHero({ ...hero, services: list });
+  };
+
+  const updateHeroService = (index: number, field: string, value: any) => {
+    const list = [...(hero.services || DEFAULT_HERO_SERVICES)];
+    list[index] = { ...list[index], [field]: value };
+    setHero({ ...hero, services: list });
+  };
+
+  const addWebsiteProductToHero = (productId?: string) => {
+    const targetId = productId || selectedProductId;
+    const prod = productsList.find((p) => p.id === targetId) || productsList[0];
+    if (!prod) return;
+
+    const list = [...(hero.services || DEFAULT_HERO_SERVICES)];
+    const newItem = {
+      id: prod.id,
+      slug: prod.slug,
+      name_ar: prod.name_ar,
+      name_en: prod.name_en,
+      subtitle_ar: "تفعيل فوري ورسمي 100%",
+      originalPrice: prod.cheapestPlanComparePrice ? `${prod.cheapestPlanComparePrice} ج.م` : "",
+      price: prod.minPrice ?? 0,
+      iconUrl: prod.icon_url,
+      iconEmoji: "⭐",
+      badge: prod.discount_percent ? `خصم ${prod.discount_percent}%` : "مميز",
+    };
+    setHero({ ...hero, services: [...list, newItem] });
+  };
+
+  const bindServiceToProduct = (index: number, productId: string) => {
+    const prod = productsList.find((p) => p.id === productId);
+    if (!prod) return;
+
+    const list = [...(hero.services || DEFAULT_HERO_SERVICES)];
+    list[index] = {
+      ...list[index],
+      id: prod.id,
+      slug: prod.slug,
+      name_ar: prod.name_ar,
+      name_en: prod.name_en,
+      price: prod.minPrice ?? list[index].price,
+      originalPrice: prod.cheapestPlanComparePrice ? `${prod.cheapestPlanComparePrice} ج.م` : list[index].originalPrice,
+      iconUrl: prod.icon_url || list[index].iconUrl,
+      badge: prod.discount_percent ? `خصم ${prod.discount_percent}%` : list[index].badge,
+    };
+    setHero({ ...hero, services: list });
+  };
+
+  const addHeroService = () => {
+    if (productsList.length > 0) {
+      addWebsiteProductToHero(productsList[0].id);
+      return;
+    }
+    const list = [...(hero.services || DEFAULT_HERO_SERVICES)];
+    const newItem = {
+      id: `service_${Date.now()}`,
+      slug: "new-service",
+      name_ar: "خدمة جديدة",
+      name_en: "New Service",
+      subtitle_ar: "توصيف فوري للخدمة",
+      originalPrice: "500 ج.م",
+      price: 250,
+      iconEmoji: "⭐",
+      badge: "جديد",
+    };
+    setHero({ ...hero, services: [...list, newItem] });
+  };
+
+  const removeHeroService = (index: number) => {
+    const list = [...(hero.services || DEFAULT_HERO_SERVICES)];
+    list.splice(index, 1);
+    setHero({ ...hero, services: list });
+  };
   const [pageContent, setPageContent] = useState<Record<string, { ar: string; en: string }>>({
     shop_intro: { ar: "", en: "" },
     page_about: { ar: "", en: "" },
@@ -322,61 +468,148 @@ function AdminSettings() {
           />
         </div>
 
-        <div className="mt-5">
-          <h3 className="text-sm font-extrabold mb-1">وصف الصفحة الرئيسية / Bio</h3>
-          <p className="text-xs text-muted-foreground mb-3">
-            الوصف القصير اللي بيظهر تحت اسم المتجر في الصفحة الرئيسية. لو الخانة فاضية بيتم استخدام
-            النص الافتراضي.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div className="flex flex-col gap-1">
-              <label className="text-[11px] font-bold text-muted-foreground">الوصف (AR)</label>
-              <textarea
-                placeholder="اشتراكات أصلية بأسعار مناسبة وتسليم فوري..."
-                value={hero.subtitle_ar ?? ""}
-                onChange={(e: any) => setHero({ ...hero, subtitle_ar: e.target.value })}
-                className="px-3 py-2 bg-background border border-border rounded-2xl outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20"
+        <div className="mt-5 p-4 rounded-2xl bg-card border border-border/80 space-y-4">
+          <div>
+            <h3 className="text-sm font-black text-brand mb-1">التحكم الكامل في الهيرو سيكشن (Hero Section Control)</h3>
+            <p className="text-xs text-muted-foreground"></p>
+          </div>
+
+          {/* Badge Control */}
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-foreground">الوسام المضيء (Badge Strip)</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <input
+                placeholder="⚡ اشتراكات أصلية بالجنيه المصري • تسليم فوري خلال دقائق"
+                value={hero.badge_ar ?? ""}
+                onChange={(e) => setHero({ ...hero, badge_ar: e.target.value })}
+                className="px-3 py-2 bg-background border border-border rounded-xl text-xs"
                 dir="rtl"
-                rows={3}
               />
-              <p className="text-[10px] text-muted-foreground truncate" dir="rtl">
-                الظاهر حالياً: {(hero.subtitle_ar || "").toString().trim() || "النص الافتراضي"}
-              </p>
+              <input
+                placeholder="⚡ Genuine subscriptions in EGP • Instant delivery"
+                value={hero.badge_en ?? ""}
+                onChange={(e) => setHero({ ...hero, badge_en: e.target.value })}
+                className="px-3 py-2 bg-background border border-border rounded-xl text-xs"
+              />
             </div>
-            <div className="flex flex-col gap-1">
-              <label className="text-[11px] font-bold text-muted-foreground">Subtitle (EN)</label>
-              <textarea
-                placeholder="Genuine subscriptions with instant delivery..."
-                value={hero.subtitle_en ?? ""}
-                onChange={(e: any) => setHero({ ...hero, subtitle_en: e.target.value })}
-                className="px-3 py-2 bg-background border border-border rounded-2xl outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20"
-                rows={3}
+          </div>
+
+          {/* Title Control */}
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-foreground">العنوان الرئيسي للهيرو (Hero Main Title)</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <input
+                placeholder="كل أدوات الذكاء الاصطناعي والتصميم... بين إيديك بأسعار مصرية!"
+                value={hero.title_ar ?? ""}
+                onChange={(e) => setHero({ ...hero, title_ar: e.target.value })}
+                className="px-3 py-2 bg-background border border-border rounded-xl text-xs font-bold"
+                dir="rtl"
               />
-              <p className="text-[10px] text-muted-foreground truncate">
-                Currently shown: {(hero.subtitle_en || "").toString().trim() || "Default text"}
-              </p>
+              <input
+                placeholder="All AI & Design Tools... At Your Fingertips in EGP!"
+                value={hero.title_en ?? ""}
+                onChange={(e) => setHero({ ...hero, title_en: e.target.value })}
+                className="px-3 py-2 bg-background border border-border rounded-xl text-xs font-bold"
+              />
+            </div>
+          </div>
+
+          {/* Subtitle / Bio */}
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-foreground">الوصف التفصيلي (Hero Subtitle)</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="flex flex-col gap-1">
+                <textarea
+                  placeholder="وفر حتى 70% على اشتراكات ChatGPT Plus و Midjourney و Canva Pro..."
+                  value={hero.subtitle_ar ?? ""}
+                  onChange={(e: any) => setHero({ ...hero, subtitle_ar: e.target.value })}
+                  className="px-3 py-2 bg-background border border-border rounded-xl outline-none transition focus:border-brand text-xs"
+                  dir="rtl"
+                  rows={2}
+                />
+              </div>
+              <div className="flex flex-col gap-1">
+                <textarea
+                  placeholder="Save up to 70% on ChatGPT Plus, Midjourney & Canva Pro..."
+                  value={hero.subtitle_en ?? ""}
+                  onChange={(e: any) => setHero({ ...hero, subtitle_en: e.target.value })}
+                  className="px-3 py-2 bg-background border border-border rounded-xl outline-none transition focus:border-brand text-xs"
+                  rows={2}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Hero Services Cards Manager */}
+          <div className="pt-4 border-t border-border/80 space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <h4 className="text-xs font-black text-brand">خدمات الهيرو سيكشن (Hero Section Services)</h4>
+                <p className="text-[11px] text-muted-foreground"></p>
+              </div>
+            </div>
+
+            {/* Clean Vertically Stacked List */}
+            <div className="space-y-2 mt-2">
+              {(hero.services || DEFAULT_HERO_SERVICES).map((service: any, index: number) => {
+                const total = (hero.services || DEFAULT_HERO_SERVICES).length;
+                const matchedProduct = productsList.find((p) => p.slug === service.slug || p.id === service.id);
+
+                return (
+                  <div
+                    key={service.id || index}
+                    className="flex items-center gap-2 p-2.5 rounded-xl bg-background border border-border/90 hover:border-brand/40 transition shadow-2xs"
+                  >
+                    <span className="grid size-7 place-items-center rounded-lg bg-brand/10 text-xs font-bold text-brand shrink-0">
+                      #{index + 1}
+                    </span>
+
+                    <div className="flex-1 min-w-0">
+                      <select
+                        value={matchedProduct?.id || service.id || ""}
+                        onChange={(e) => bindServiceToProduct(index, e.target.value)}
+                        className="w-full bg-card border border-border rounded-lg px-3 py-1.5 text-xs font-bold text-foreground outline-none focus:border-brand"
+                        dir="rtl"
+                      >
+                        <option value="">-- اختر المنتج من المتجر --</option>
+                        {productsList.map((p) => (
+                          <option key={p.id} value={p.id}>
+                            {p.name_ar || p.name_en} ({p.minPrice ?? "0"} ج.م)
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="flex items-center gap-1 shrink-0">
+                      {/* Move Up */}
+                      <button
+                        type="button"
+                        disabled={index === 0}
+                        onClick={() => moveHeroService(index, "up")}
+                        className="p-1.5 rounded-lg border border-border bg-card text-foreground hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed transition"
+                        title="تحريك لأعلى"
+                      >
+                        <ArrowUp className="size-3.5" />
+                      </button>
+                      {/* Move Down */}
+                      <button
+                        type="button"
+                        disabled={index === total - 1}
+                        onClick={() => moveHeroService(index, "down")}
+                        className="p-1.5 rounded-lg border border-border bg-card text-foreground hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed transition"
+                        title="تحريك لأسفل"
+                      >
+                        <ArrowDown className="size-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-foreground">
-              صورة الغلاف (Cover) للصفحة الرئيسية
-            </label>
-            <ImageUpload
-              bucket="product-images"
-              label=""
-              compact
-              value={brand.cover_url ?? ""}
-              onChange={(url) => setBrand({ ...brand, cover_url: url })}
-              size={0}
-              requireAspectRatio={{ w: 16, h: 9 }}
-            />
-            <p className="text-[11px] text-muted-foreground leading-relaxed">
-              لو فاضية هيظهر الغلاف الافتراضي.
-            </p>
-          </div>
-          <div className="space-y-1.5">
+        <div className="mt-3">
+          <div className="space-y-1.5 max-w-md">
             <label className="text-xs font-bold text-foreground">
               الصورة الشخصية (Avatar) للصفحة الرئيسية
             </label>
@@ -396,37 +629,8 @@ function AdminSettings() {
         </div>
       </Section>
 
-      <Section title={"المظهر / Theme"}>
-        <p className="text-xs text-muted-foreground mb-4">
-          تحكم في مظهر الموقع: قفل على الفاتح أو الداكن، أو سيب الزائر يبدّل بينهم.
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          {(
-            [
-              ["both", "زائر يبدّل (داكن افتراضي)", "Both — toggle"],
-              ["dark", "داكن فقط", "Dark only"],
-              ["light", "فاتح فقط", "Light only"],
-            ] as const
-          ).map(([v, ar, en]) => (
-            <button
-              key={v}
-              type="button"
-              onClick={() => setThemeMode(v)}
-              className={`p-4 rounded-2xl border text-start transition active:scale-[0.99] ${
-                themeMode === v
-                  ? "border-brand bg-brand/10"
-                  : "border-border bg-background hover:border-brand/40"
-              }`}
-            >
-              <div className="font-bold text-sm">{ar}</div>
-              <div className="text-[11px] text-muted-foreground">{en}</div>
-            </button>
-          ))}
-        </div>
-      </Section>
-
       <Section title={"إعدادات الشراء"}>
-        <p className="text-xs text-muted-foreground mb-4">تحكم في تجربة الدفع للعملاء الجدد.</p>
+        <p className="text-xs text-muted-foreground mb-4"></p>
         <label className="flex items-start gap-3 p-4 bg-background border border-border rounded-xl cursor-pointer">
           <input
             type="checkbox"
@@ -446,9 +650,7 @@ function AdminSettings() {
       </Section>
 
       <Section title={"الدفع اليدوي"}>
-        <p className="text-xs text-muted-foreground mb-4">
-          الأرقام اللي بتظهر للعميل في صفحة الدفع. اكتب أرقام فقط بدون مسافات.
-        </p>
+        <p className="text-xs text-muted-foreground mb-4"></p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {(
             [
@@ -459,7 +661,7 @@ function AdminSettings() {
                 "01xxxxxxxxx",
                 "📱",
               ],
-              ["instapay_number", "رقم أو عنوان الانستاباي", "InstaPay", "01xxxxxxxxx", "🏦"],
+              ["instapay_number", "رقم أو عنوان InstaPay", "InstaPay", "01xxxxxxxxx", "🏦"],
             ] as const
           ).map(([k, title, hint, ph, icon]) => {
             const val = (manualPaymentDetails as any)[k] ?? "";
@@ -503,10 +705,7 @@ function AdminSettings() {
       </Section>
 
       <Section title={"إعدادات PayPal وسعر صرف الدولار"}>
-        <p className="text-xs text-muted-foreground mb-4">
-          التحكم في تفعيل بوابة دفع بايبال وسعر صرف الدولار مقابل الجنيه المصري لتحويل قيمة الطلبات
-          تلقائياً عند الشراء بـ PayPal.
-        </p>
+        <p className="text-xs text-muted-foreground mb-4"></p>
         <div className="space-y-4">
           <label className="flex items-start gap-3 p-4 bg-background border border-border rounded-2xl cursor-pointer hover:border-brand/40 transition">
             <input
@@ -602,9 +801,7 @@ function AdminSettings() {
       </Section>
 
       <Section title={"إعدادات الأمان"}>
-        <p className="text-xs text-muted-foreground mb-4">
-          باسورد الحماية للعمليات الحساسة (الحذف) في الداشبورد.
-        </p>
+        <p className="text-xs text-muted-foreground mb-4"></p>
         <div className="max-w-xl p-4 rounded-2xl bg-background border border-border space-y-3">
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-2">
@@ -684,10 +881,7 @@ function AdminSettings() {
       </Section>
 
       <Section title={"Meta (Facebook) Pixel & Conversions API (CAPI)"}>
-        <p className="text-xs text-muted-foreground mb-4">
-          ربط وتتبع إعلانات فيسبوك / ميتا في جميع صفحات الموقع (PageView, ViewContent, AddToCart,
-          InitiateCheckout, Purchase, Search, Contact).
-        </p>
+        <p className="text-xs text-muted-foreground mb-4"></p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="p-4 rounded-2xl bg-background border border-border space-y-2">
             <label className="text-[11px] font-bold text-muted-foreground block">
@@ -780,9 +974,7 @@ function AdminSettings() {
       </Section>
 
       <Section title={"Trust Stats / أرقام الثقة"}>
-        <p className="text-xs text-muted-foreground mb-4">
-          الأرقام اللي بتظهر في سيكشن "ليه العملاء بيثقوا فينا" على الصفحة الرئيسية.
-        </p>
+        <p className="text-xs text-muted-foreground mb-4"></p>
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
           {(
             [

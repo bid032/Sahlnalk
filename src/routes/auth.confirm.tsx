@@ -6,7 +6,7 @@ import { Header } from '@/components/Header'
 export const Route = createFileRoute('/auth/confirm')({
   head: () => ({
     meta: [
-      { title: 'تأكيد البريد الإلكتروني، سهلنالك' },
+      { title: 'سهلنالك | تأكيد البريد الإلكتروني' },
       { name: 'robots', content: 'noindex, nofollow' },
     ],
   }),

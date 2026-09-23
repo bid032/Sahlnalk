@@ -19,10 +19,10 @@ export const Route = createFileRoute("/order-success")({
   },
   head: () => ({
     meta: [
-      { title: "طلبك اتأكد | سهلنالك" },
+      { title: "سهلنالك | طلبك اتأكد" },
       { name: "description", content: "استلمنا طلبك وبدأنا التنفيذ - بيانات اشتراكك في الطريق لإيميلك." },
       { name: "robots", content: "noindex, nofollow" },
-      { property: "og:title", content: "طلبك اتأكد | سهلنالك" },
+      { property: "og:title", content: "سهلنالك | طلبك اتأكد" },
       { property: "og:description", content: "استلمنا طلبك وبدأنا التنفيذ - بيانات اشتراكك في الطريق لإيميلك." },
     ],
   }),
@@ -307,8 +307,8 @@ function OrderSuccessPage() {
                         </div>
                         <span
                           className={`shrink-0 rounded-full border px-2.5 py-1 text-[10px] font-black sm:text-[11px] ${delivered
-                              ? "border-success/30 bg-success/10 text-success"
-                              : "border-warning/30 bg-warning/10 text-warning"
+                            ? "border-success/30 bg-success/10 text-success"
+                            : "border-warning/30 bg-warning/10 text-warning"
                             }`}
                         >
                           {delivered

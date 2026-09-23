@@ -10,20 +10,20 @@ import { StructuredContent } from "@/components/StructuredContent";
 export const Route = createFileRoute("/terms")({
   head: () => ({
     meta: [
-      { title: "الشروط والأحكام | سهلنالك" },
+      { title: "سهلنالك | الشروط والأحكام" },
       {
         name: "description",
         content: "قواعد استخدام سهلنالك وشراء الاشتراكات: التسليم، الضمان، الدفع والاستخدام - مكتوبة بلغة واضحة.",
       },
       { property: "og:site_name", content: "سهلنالك" },
-      { property: "og:title", content: "الشروط والأحكام | سهلنالك" },
+      { property: "og:title", content: "سهلنالك | الشروط والأحكام" },
       { property: "og:description", content: "التسليم، الضمان، الدفع والاستخدام - قواعد سهلنالك بلغة واضحة." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://rapidkeyz.com/terms" },
       { property: "og:image", content: "https://rapidkeyz.com/cover.webp" },
       { property: "og:image:secure_url", content: "https://rapidkeyz.com/cover.webp" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "الشروط والأحكام | سهلنالك" },
+      { name: "twitter:title", content: "سهلنالك | الشروط والأحكام" },
       { name: "twitter:description", content: "التسليم، الضمان، الدفع والاستخدام - قواعد سهلنالك بلغة واضحة." },
       { name: "twitter:image", content: "https://rapidkeyz.com/cover.webp" },
     ],
@@ -47,7 +47,7 @@ function TermsPage() {
     <div className="min-h-screen bg-background text-foreground">
       <Header />
       <PageHeader title={t.terms.title} />
-      <main className="mx-auto w-full max-w-6xl px-3 py-5 sm:px-6 sm:py-7">
+      <main className="mx-auto w-full max-w-[94rem] px-3 py-5 sm:px-6 sm:py-7">
         <div className="rounded-3xl border border-brand/15 bg-card p-5 shadow-sm sm:p-8">
           {customText ? (
             <StructuredContent content={customText} dir={lang === "ar" ? "rtl" : "ltr"} />

@@ -160,7 +160,7 @@ export function CategoryChip({ c, count }: CategoryCardProps) {
     <Link
       to="/shop"
       search={{ category: c.slug } as any}
-      className="group flex w-[220px] shrink-0 snap-start items-center gap-3 rounded-2xl border border-border/60 bg-card p-3 outline-none transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/50 hover:shadow-[0_14px_28px_-18px_rgba(11,63,160,0.5)] focus-visible:ring-2 focus-visible:ring-brand active:scale-[0.98] sm:w-[240px]"
+      className="group flex w-[220px] shrink-0 snap-start items-center gap-3 rounded-2xl border border-border/60 bg-card p-3 outline-none transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/50 hover:shadow-[0_14px_28px_-18px_rgba(11,63,160,0.5)] focus-visible:ring-2 focus-visible:ring-brand active:scale-[0.98] sm:w-full sm:shrink sm:p-3.5"
     >
       <CategoryIcon category={c} size="md" />
       <span className="min-w-0 flex-1">

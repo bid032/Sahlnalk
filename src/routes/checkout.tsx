@@ -44,7 +44,7 @@ async function cancelPendingOrderEverywhere(orderId: string | null) {
 export const Route = createFileRoute("/checkout")({
   head: () => ({
     meta: [
-      { title: "إتمام الطلب | سهلنالك" },
+      { title: "سهلنالك | إتمام الطلب" },
       { name: "description", content: "كمّل بياناتك وادفع بالطريقة اللي تريحك - اشتراكك بيبدأ يتجهز أول ما تأكّد." },
       { name: "robots", content: "noindex, nofollow" },
     ],
@@ -1882,8 +1882,13 @@ function CheckoutPage() {
                           </li>
                           <li>
                             {lang === "ar"
-                              ? "ارفع صورة إيصال التحويل واكتب الرقم اللي حولت منه."
+                              ? "ارفع صورة إيصال الدفع واكتب الرقم اللي حولت منه."
                               : "Upload the receipt screenshot and enter the sending number."}
+                          </li>
+                          <li>
+                            {lang === "ar"
+                              ? "إيصال الدفع لازم يكون واضح فيه التاريخ و وقت التحويل."
+                              : "The payment receipt must clearly show the date and time of the transfer."}
                           </li>
                         </ol>
                       </div>

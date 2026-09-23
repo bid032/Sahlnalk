@@ -11,14 +11,14 @@ import { StructuredContent } from "@/components/StructuredContent";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "من نحن | سهلنالك" },
+      { title: "سهلنالك | من نحن" },
       {
         name: "description",
         content:
           "سهلنالك متجر مصري لبيع الاشتراكات الرقمية الأصلية بالجنيه: تسليم في دقائق، ضمان حقيقي، ودعم واتساب بيرد بسرعة.",
       },
       { property: "og:site_name", content: "Sahlnalk" },
-      { property: "og:title", content: "من نحن | سهلنالك" },
+      { property: "og:title", content: "سهلنالك | من نحن" },
       {
         property: "og:description",
         content: "ليه سهلنالك؟ اشتراكات أصلية بالجنيه، تسليم في دقائق، وضمان حقيقي.",
@@ -28,7 +28,7 @@ export const Route = createFileRoute("/about")({
       { property: "og:image", content: "https://rapidkeyz.com/cover.webp" },
       { property: "og:image:secure_url", content: "https://rapidkeyz.com/cover.webp" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "من نحن | سهلنالك" },
+      { name: "twitter:title", content: "سهلنالك | من نحن" },
       { name: "twitter:description", content: "ليه سهلنالك؟ اشتراكات أصلية بالجنيه، تسليم في دقائق، وضمان حقيقي." },
       { name: "twitter:image", content: "https://rapidkeyz.com/cover.webp" },
     ],
@@ -75,7 +75,7 @@ function AboutPage() {
     <div className="min-h-screen bg-background text-foreground">
       <Header />
       <PageHeader title={t.about.title} />
-      <main className="mx-auto w-full max-w-6xl px-3 py-5 sm:px-6 sm:py-7">
+      <main className="mx-auto w-full max-w-[94rem] px-3 py-5 sm:px-6 sm:py-7">
         <div className="rounded-3xl border border-brand/15 bg-card p-5 shadow-sm sm:p-8">
           {customText ? (
             <StructuredContent content={customText} dir={lang === "ar" ? "rtl" : "ltr"} />

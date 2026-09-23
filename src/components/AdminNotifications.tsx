@@ -188,8 +188,9 @@ export function AdminNotifications() {
   // Realtime subscribe with cross-tab deduplication & DELETE handling
   useEffect(() => {
     if (!canModerate) return;
+    const channelName = `admin-orders-notifications-${Math.random().toString(36).substring(2, 9)}`;
     const channel = supabase
-      .channel("admin-orders-notifications")
+      .channel(channelName)
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "orders" },
